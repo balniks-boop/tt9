@@ -85,4 +85,29 @@
 			tools:ignore="Instantiatable" />
 		<include layout="@layout/key_overlay_icons" />
 	</RelativeLayout>
+
+	<!-- TyNi-style keys -->
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_x">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_exclamation" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_q">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_question" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_a">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_at" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_s">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeySymbols
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_symbols" />
+	</RelativeLayout>
 </LinearLayout>

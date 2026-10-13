@@ -1,0 +1,55 @@
+name: Compilar APK pessoal
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Setup Java
+      uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: 21
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v3
+
+    - name: Build dictionaries
+      run: ./gradlew generateDocs validateLanguages buildDefinition buildDictionaryDownloads copyDownloadsToAssets
+
+    - name: Build APK (Full, signed)
+      run: ./gradlew assembleFullRelease
+
+    - name: Collect APK
+      run: |
+        mkdir -p out
+        cp app/build/outputs/apk/full/release/*.apk out/TT9-pessoal.apk
+        ls -la out
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TT9-pessoal
+        path: out/TT9-pessoal.apk
+
+    - name: Publish release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: pessoal-${{ github.run_number }}
+        name: TT9 pessoal ${{ github.run_number }}
+        body: "Versão pessoal do teclado. Descarrega o ficheiro TT9-pessoal.apk abaixo e instala-o."
+        files: out/TT9-pessoal.apk
+        make_latest: true

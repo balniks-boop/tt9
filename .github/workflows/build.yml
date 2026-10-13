@@ -1,12 +1,7 @@
 name: Build the Project
 
 on:
-  pull_request:
-    branches:
-      - "**"
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   build:

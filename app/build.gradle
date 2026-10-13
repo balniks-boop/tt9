@@ -174,12 +174,23 @@ android {
 		vectorDrawables.generatedDensities = []
 	}
 
+	signingConfigs {
+		pessoal {
+			storeFile file('pessoal.keystore')
+			storePassword 'tt9pessoal'
+			keyAlias 'pessoal'
+			keyPassword 'tt9pessoal'
+		}
+	}
+
 	buildTypes {
 		debug {
 			buildConfigField 'String', 'VERSION_FULL', "\"${getVersionString('debug')}\""
 		}
 		release {
 			buildConfigField 'String', 'VERSION_FULL', "\"${getVersionString('release')}\""
+			signingConfig signingConfigs.pessoal
+			applicationIdSuffix '.pessoal'
 
 			debuggable = false
 			jniDebuggable = false

@@ -26,8 +26,8 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 	public final static int NUMPAD_SHAPE_V = 1;
 	public final static int NUMPAD_SHAPE_LONG_SPACE = 2;
 
-	public static final String DEFAULT_LFN_KEY_ORDER = "1234";
-	public static final String DEFAULT_RFN_KEY_ORDER = "5678";
+	public static final String DEFAULT_LFN_KEY_ORDER = "XQAS";
+	public static final String DEFAULT_RFN_KEY_ORDER = "5T38";
 
 	public static final HashMap<Character, Integer> KEY_ORDER_MAP = new HashMap<>() {{
 		put('1', R.id.soft_key_wrapper_1);
@@ -45,6 +45,10 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		put('R', R.id.soft_key_wrapper_r);
 		put('T', R.id.soft_key_wrapper_t);
 		put('V', R.id.soft_key_wrapper_v);
+		put('X', R.id.soft_key_wrapper_x);
+		put('Q', R.id.soft_key_wrapper_q);
+		put('A', R.id.soft_key_wrapper_a);
+		put('S', R.id.soft_key_wrapper_s);
 	}};
 
 	SettingsVirtualNumpad(Context context) {
@@ -122,7 +126,7 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 	}
 
 	public int getNumpadShape() {
-		return getStringifiedInt(DropDownNumpadShape.NAME, NUMPAD_SHAPE_SQUARE);
+		return getStringifiedInt(DropDownNumpadShape.NAME, NUMPAD_SHAPE_LONG_SPACE);
 	}
 
 	public boolean isNumpadShapeLongSpace() { return getNumpadShape() == NUMPAD_SHAPE_LONG_SPACE; }

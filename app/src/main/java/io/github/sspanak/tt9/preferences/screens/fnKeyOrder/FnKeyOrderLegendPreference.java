@@ -43,6 +43,10 @@ public class FnKeyOrderLegendPreference extends PreferencePlainText {
 			.append("\nN = ").append(__(new CmdNextLanguage().getName()))
 			.append("\nT = ").append(__(new CmdTogglePredictiveMode().getName()))
 			.append("\nV = ").append(__(new CmdVoiceInput().getName()))
+			.append("\nX = !")
+			.append("\nQ = ?")
+			.append("\nA = @")
+			.append("\nS = SYM")
 			.append("\n\n")
 			.append(__(R.string.fn_key_order_preview_tip));
 

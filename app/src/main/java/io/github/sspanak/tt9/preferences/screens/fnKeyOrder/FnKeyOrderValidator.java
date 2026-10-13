@@ -57,7 +57,7 @@ public class FnKeyOrderValidator {
 
 
 	private boolean validateDigits(String text, int side) {
-		if (text == null || !text.matches("^[1-8CcEeLlNnRrTtVv]*$")) {
+		if (text == null || !text.matches("^[1-8AaCcEeLlNnQqRrSsTtVvXx]*$")) {
 			error = R.string.fn_key_order_error_unsupported_key_code;
 			errorSide = side;
 			return false;

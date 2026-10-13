@@ -161,6 +161,12 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		addKey(R.id.soft_key_extra_toggle_predictive_mode);
 		addKey(R.id.soft_key_extra_voice_input);
 
+		// TyNi-style keys
+		addKey(R.id.soft_key_extra_exclamation);
+		addKey(R.id.soft_key_extra_question);
+		addKey(R.id.soft_key_extra_at);
+		addKey(R.id.soft_key_extra_symbols);
+
 		return keys;
 	}
 

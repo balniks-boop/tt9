@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import io.github.sspanak.tt9.preferences.settings.SettingsStore;
 import io.github.sspanak.tt9.ui.main.keys.BaseClickableKey;
-import io.github.sspanak.tt9.ui.main.keys.SoftKeyNumber;
 import io.github.sspanak.tt9.util.Logger;
 import io.github.sspanak.tt9.util.sys.DeviceInfo;
 
@@ -18,7 +17,8 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 	}
 
 	public static int getPressVibration(BaseClickableKey key) {
-		return key instanceof SoftKeyNumber ? HapticFeedbackConstants.KEYBOARD_TAP : HapticFeedbackConstants.VIRTUAL_KEY;
+		// same short tap for every key; on many phones VIRTUAL_KEY is too weak or silent
+		return HapticFeedbackConstants.KEYBOARD_TAP;
 	}
 
 	public static int getHoldVibration() {

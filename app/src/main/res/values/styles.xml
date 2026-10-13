@@ -499,6 +499,18 @@
 		<item name="rippleColor">?attr/colorKeyFnRipple</item>
 	</style>
 
+	<!-- small toolbar buttons: no insets, so the content is centered in the thin bar -->
+	<style name="TTheme.Numpad.Key.Toolbar" parent="TTheme.Numpad.Key.Arrow">
+		<item name="android:insetTop">2dp</item>
+		<item name="android:insetBottom">2dp</item>
+		<item name="android:minHeight">0dp</item>
+		<item name="android:minWidth">0dp</item>
+		<item name="android:paddingTop">0dp</item>
+		<item name="android:paddingBottom">0dp</item>
+		<item name="android:gravity">center</item>
+		<item name="android:includeFontPadding">false</item>
+	</style>
+
 	<!-- Keypad keys -->
 	<style name="TTheme.Numpad.Key.Large" parent="TTheme.Numpad.Key.Arrow">
 		<item name="android:layout_height">@dimen/numpad_key_height</item>

@@ -156,7 +156,8 @@ public class StatusBar {
 
 
 	public void setText(InputMode inputMode) {
-		setText("[ " + inputMode.toString() + " ]");
+		// The language is shown on the spacebar instead, so the status bar stays clean.
+		setText("");
 	}
 
 

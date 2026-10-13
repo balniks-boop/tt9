@@ -1,7 +1,12 @@
 package io.github.sspanak.tt9.ui.main.keys;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.AttributeSet;
+
+import androidx.core.graphics.ColorUtils;
 
 import io.github.sspanak.tt9.util.TextTools;
 import io.github.sspanak.tt9.util.chars.Characters;
@@ -135,10 +140,38 @@ public class SoftKeyNumber0 extends SoftKeyNumberSwipeable {
 		setEnabled(tt9 != null && !(tt9.isTextEditingActive() && hasLettersOnAllKeys()));
 	}
 
+	/**
+	 * TyNi-style: show the current language code (PT, EN...) in small, faded letters below the
+	 * space symbol, instead of showing the language name in the status bar.
+	 */
+	private void renderLanguageLabel() {
+		if (tt9 == null || tt9.getLanguage() == null || !Characters.SPACE.equals(getTitle())) {
+			return;
+		}
+
+		final String code = tt9.getLanguage().getCode().toUpperCase(tt9.getLanguage().getLocale());
+		if (code.isEmpty()) {
+			return;
+		}
+
+		final String title = Characters.SPACE;
+		final SpannableStringBuilder text = new SpannableStringBuilder(title).append("\n").append(code);
+		final int codeStart = title.length() + 1;
+
+		text.setSpan(new RelativeSizeSpan(getTitleScale()), 0, title.length(), 0);
+		text.setSpan(new RelativeSizeSpan(0.55f * Math.min(1, getTT9Height()) * getScreenSizeScale()), codeStart, text.length(), 0);
+		text.setSpan(new ForegroundColorSpan(ColorUtils.setAlphaComponent(textColor, 140)), codeStart, text.length(), 0);
+
+		setLineSpacing(0, 0.85f);
+		setText(text);
+	}
+
+
 	@Override
 	public void render() {
 		setVisibility();
 		setEnabled();
 		super.render();
+		renderLanguageLabel();
 	}
 }

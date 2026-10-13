@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 
+import androidx.annotation.NonNull;
+
 import io.github.sspanak.tt9.commands.CmdShowEmojis;
 import io.github.sspanak.tt9.ime.helpers.Key;
 import io.github.sspanak.tt9.ime.modes.InputMode;
@@ -12,12 +14,16 @@ import io.github.sspanak.tt9.ui.tray.SuggestionsBar;
 
 /**
  * "SYM" key, inspired by the TyNi T9 layout.
- * - Tap: opens the symbol list. Tapping again switches between "symbols" and "more symbols".
- *   It never jumps to the emojis. Backspace closes the list without typing anything.
+ * - Tap: cycles "symbols" -> "more symbols" -> emojis -> "symbols"...
+ *   Backspace closes the list without typing anything.
  * - Hold: opens the emoji list.
  */
 public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	private static final int MAX_BACKSPACES = 20;
+	private static final int STAGE_SYMBOLS = 1;
+	private static final int STAGE_MORE_SYMBOLS = 2;
+	private static final int STAGE_EMOJIS = 3;
+	private int stage = 0;
 	private final CmdShowEmojis showEmojis = new CmdShowEmojis();
 
 	public SoftKeySymbols(Context context) { super(context); }
@@ -41,23 +47,36 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 		final InputMode mode = tt9.getInputMode();
 		final boolean isSymbolSequence = mode != null && InputModeKind.isPredictive(mode) && mode.getFirstKey() == 1;
 
+		// nothing open yet -> "symbols"
 		if (!isSymbolSequence) {
+			stage = STAGE_SYMBOLS;
 			return pressKey1();
 		}
 
-		final int length = mode.getSequenceLength();
-
 		// "symbols" -> "more symbols"
-		if (length == 1) {
+		if (mode.getSequenceLength() == 1) {
+			stage = STAGE_MORE_SYMBOLS;
 			return mode.onReplaceSuggestion(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
 		}
 
-		// "more symbols" or emojis -> back to "symbols"
+		// "more symbols" -> emojis
+		if (stage == STAGE_MORE_SYMBOLS) {
+			backToSymbols(mode);
+			stage = STAGE_EMOJIS;
+			return pressKey1();
+		}
+
+		// emojis -> back to "symbols"
+		backToSymbols(mode);
+		stage = STAGE_SYMBOLS;
+		return true;
+	}
+
+
+	private void backToSymbols(@NonNull InputMode mode) {
 		for (int i = 0; i < MAX_BACKSPACES && mode.getFirstKey() == 1 && mode.getSequenceLength() > 1; i++) {
 			tt9.onBackspace(0);
 		}
-
-		return true;
 	}
 
 

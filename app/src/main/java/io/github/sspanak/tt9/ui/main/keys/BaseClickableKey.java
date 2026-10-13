@@ -194,9 +194,14 @@ public class BaseClickableKey extends com.google.android.material.button.Materia
 
 
 	protected boolean handlePress() {
-		// With a custom vibration strength, we vibrate on release instead (see release()).
-		if (validateTT9Handler() && getVisibility() == VISIBLE && !isCustomVibration()) {
-			vibrate(Vibration.getPressVibration(this));
+		if (validateTT9Handler() && getVisibility() == VISIBLE) {
+			if (isCustomVibration()) {
+				// Vibrate right away, but outside of the touch processing, so the typing work that
+				// follows does not cut it off.
+				post(() -> vibrate(Vibration.getPressVibration(this)));
+			} else {
+				vibrate(Vibration.getPressVibration(this));
+			}
 		}
 
 		return false;
@@ -233,10 +238,6 @@ public class BaseClickableKey extends com.google.android.material.button.Materia
 		boolean result = handleRelease();
 		lastPressedKey = ignoreLastPressedKey ? -1 : getId();
 
-		// Vibrate after the key has done its job, so nothing that happens while typing can cut it off.
-		if (isCustomVibration()) {
-			post(() -> vibrate(Vibration.getPressVibration(this)));
-		}
 		return result;
 	}
 

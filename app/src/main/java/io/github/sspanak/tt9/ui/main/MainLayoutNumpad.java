@@ -18,6 +18,8 @@ import io.github.sspanak.tt9.preferences.settings.SettingsVirtualNumpad;
 import io.github.sspanak.tt9.ui.main.keys.SoftKey;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyArrow;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyText;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarNumeric;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarSettings;
 import io.github.sspanak.tt9.util.Logger;
 
 class MainLayoutNumpad extends MainLayoutClassic {
@@ -35,7 +37,9 @@ class MainLayoutNumpad extends MainLayoutClassic {
 
 	@Override
 	protected int getStatusBarHeight(@NonNull Resources resources, @NonNull SettingsStore settings) {
-		return resources.getDimensionPixelSize(R.dimen.numpad_status_bar_spacing_bottom) + resources.getDimensionPixelSize(R.dimen.numpad_suggestion_height);
+		return resources.getDimensionPixelSize(R.dimen.numpad_status_bar_spacing_bottom)
+			+ resources.getDimensionPixelSize(R.dimen.numpad_suggestion_height)
+			+ resources.getDimensionPixelSize(R.dimen.numpad_toolbar_height);
 	}
 
 
@@ -78,6 +82,11 @@ class MainLayoutNumpad extends MainLayoutClassic {
 
 		for (SoftKey key : getKeys()) {
 			if (key instanceof SoftKeyArrow && ((SoftKeyArrow) key).isSmall()) {
+				continue;
+			}
+
+			// the toolbar keeps its own, smaller height
+			if (key instanceof SoftKeyToolbarSettings || key instanceof SoftKeyToolbarNumeric) {
 				continue;
 			}
 
@@ -171,6 +180,10 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		addKey(R.id.soft_key_extra_times);
 		addKey(R.id.soft_key_extra_divide);
 		addKey(R.id.soft_key_extra_equals);
+
+		// toolbar
+		addKey(R.id.soft_key_toolbar_settings);
+		addKey(R.id.soft_key_toolbar_numeric);
 
 		return keys;
 	}

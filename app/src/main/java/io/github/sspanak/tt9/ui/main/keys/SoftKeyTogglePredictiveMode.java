@@ -7,7 +7,8 @@ import io.github.sspanak.tt9.commands.CmdNextInputMode;
 import io.github.sspanak.tt9.ime.modes.InputModeKind;
 
 /**
- * Mode key. Cycles: T9 (predictive) -> ABC (letter by letter) -> 123 (numbers) -> T9...
+ * Mode key. Switches T9 (predictive) <-> ABC (letter by letter). In 123 mode, it returns to text.
+ * Numbers are reached with the "123" button on the toolbar.
  */
 public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 	private final CmdNextInputMode nextMode = new CmdNextInputMode();
@@ -18,7 +19,7 @@ public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 
 	@Override
 	protected boolean handleRelease() {
-		return nextMode.run(tt9);
+		return ModeSwitcher.toggleText(tt9);
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 		if (InputModeKind.isPredictive(tt9.getInputMode())) {
 			return "T9";
 		} else if (tt9.isInputModeNumeric()) {
-			return "123";
+			return "T9";
 		} else if (tt9.isInputModeABC()) {
 			return "ABC";
 		} else {
@@ -55,7 +56,7 @@ public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 
 	@Override
 	public void render() {
-		setEnabled(nextMode.isAvailable(tt9));
+		setEnabled(ModeSwitcher.canToggleText(tt9));
 		super.render();
 	}
 }

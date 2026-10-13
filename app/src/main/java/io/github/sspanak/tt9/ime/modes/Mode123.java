@@ -25,6 +25,7 @@ class Mode123 extends ModePassthrough {
 	@Override public boolean shouldAcceptPreviousSuggestion(String currentWord, int nextKey, boolean hold) { return !currentWord.isEmpty(); }
 
 	private final ArrayList<ArrayList<String>> KEY_CHARACTERS = new ArrayList<>();
+	private static final String EXTRA_ALLOWED_CHARS = "×÷−€£$%"; // calculator and currency keys
 
 
 	protected Mode123(@NonNull SettingsStore settings, @NonNull Language language, @Nullable InputType inputType) {
@@ -70,11 +71,31 @@ class Mode123 extends ModePassthrough {
 	private void setDefaultSpecialCharacters() {
 		Language sortLang = language instanceof NullLanguage ? LanguageCollection.getDefault() : language;
 		KEY_CHARACTERS.add(
-			TextTools.removeLettersFromList(orderCharsForNumericField(settings.getOrderedKeyChars(sortLang, 0)))
+			addCurrencies(TextTools.removeLettersFromList(orderCharsForNumericField(settings.getOrderedKeyChars(sortLang, 0))))
 		);
 		KEY_CHARACTERS.add(
 			TextTools.removeLettersFromList(orderCharsForNumericField(settings.getOrderedKeyChars(sortLang, 1)))
 		);
+	}
+
+
+	/**
+	 * Put "€" and "$" in the 0-key hold list, right after TAB (before "@").
+	 */
+	@NonNull
+	private ArrayList<String> addCurrencies(@NonNull ArrayList<String> chars) {
+		chars.remove("€");
+		chars.remove("$");
+
+		int position = chars.indexOf("\t");
+		position = position >= 0 ? position + 1 : chars.indexOf("@");
+		if (position < 0 || position > chars.size()) {
+			position = chars.size();
+		}
+
+		chars.add(position, "$");
+		chars.add(position, "€");
+		return chars;
 	}
 
 
@@ -140,7 +161,8 @@ class Mode123 extends ModePassthrough {
 			|| text.length() != 1
 			|| text.charAt(0) == 9
 			|| !(
-				(text.charAt(0) > 31 && text.charAt(0) < 65)
+				EXTRA_ALLOWED_CHARS.indexOf(text.charAt(0)) >= 0
+				|| (text.charAt(0) > 31 && text.charAt(0) < 65)
 				|| (text.charAt(0) > 90 && text.charAt(0) < 97)
 				|| (text.charAt(0) > 122 && text.charAt(0) < 127)
 			);

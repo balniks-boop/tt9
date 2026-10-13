@@ -17,6 +17,16 @@
 		android:layout_height="match_parent"
 		android:layout_weight="1" />
 
+	<io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarAddWord
+		style="@style/TTheme.Numpad.Key.Toolbar"
+		android:id="@+id/soft_key_toolbar_add_word"
+		android:layout_width="@dimen/numpad_toolbar_wide_button_width" />
+
+	<View
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1" />
+
 	<io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarNumeric
 		style="@style/TTheme.Numpad.Key.Toolbar"
 		android:id="@+id/soft_key_toolbar_numeric"

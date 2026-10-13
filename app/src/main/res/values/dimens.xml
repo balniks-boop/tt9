@@ -65,5 +65,6 @@
 	<dimen name="numpad_suggestion_height">40sp</dimen>
 	<dimen name="numpad_toolbar_height">30dp</dimen>
 	<dimen name="numpad_toolbar_button_width">56dp</dimen>
+	<dimen name="numpad_toolbar_wide_button_width">104dp</dimen>
 	<dimen name="numpad_suggestion_min_width">36sp</dimen>
 </resources>

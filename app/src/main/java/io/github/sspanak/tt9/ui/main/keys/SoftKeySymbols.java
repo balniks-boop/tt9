@@ -24,6 +24,7 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	private static final int STAGE_MORE_SYMBOLS = 2;
 	private static final int STAGE_EMOJIS = 3;
 	private int stage = 0;
+	private boolean returnToAbc = false;
 	private final CmdShowEmojis showEmojis = new CmdShowEmojis();
 
 	public SoftKeySymbols(Context context) { super(context); }
@@ -42,6 +43,13 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	protected boolean handleRelease() {
 		if (!validateTT9Handler()) {
 			return false;
+		}
+
+		// In ABC mode, the key 1 list disappears automatically after a moment, so we briefly switch
+		// to T9 to show the full list, and return to ABC once a symbol has been chosen.
+		if (InputModeKind.isABC(tt9.getInputMode()) && tt9.getAllowedInputModes().contains(InputMode.MODE_PREDICTIVE)) {
+			tt9.setInputMode(InputMode.MODE_PREDICTIVE);
+			returnToAbc = true;
 		}
 
 		final InputMode mode = tt9.getInputMode();
@@ -95,6 +103,36 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	@Override
 	protected String getTitle() {
 		return "SYM";
+	}
+
+
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
+
+
+	@Override
+	public void render() {
+		super.render();
+
+		// a symbol was chosen (or the list was closed) -> back to ABC
+		if (returnToAbc && tt9 != null) {
+			final InputMode mode = tt9.getInputMode();
+			if (mode == null || !InputModeKind.isPredictive(mode)) {
+				returnToAbc = false;
+			} else if (mode.getFirstKey() != 1) {
+				// check again a moment later: right after opening, the list may not be loaded yet
+				post(() -> {
+					if (!returnToAbc || tt9 == null) return;
+					final InputMode current = tt9.getInputMode();
+					if (current != null && InputModeKind.isPredictive(current) && current.getFirstKey() != 1) {
+						returnToAbc = false;
+						tt9.setInputMode(InputMode.MODE_ABC);
+					}
+				});
+			}
+		}
 	}
 
 

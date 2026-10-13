@@ -82,19 +82,15 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 
 		final boolean isClick = settings.getVibrationType() == DropDownVibrationType.TYPE_CLICK;
 
-		// Dry click: use the phone's own built-in click effects, which are short and strong by design.
-		if (isClick && vibrateClick(vibrator, level, isHold)) {
-			return true;
-		}
 
-		// soft: a longer, gentler buzz (21..75 ms); click: a short, strong, dry tap (12..30 ms)
-		long duration = isClick ? 10 + level * 2L : 15 + level * 6L;
+		// soft: a longer, gentler buzz (21..75 ms); click: a short tap at full motor power (13..40 ms)
+		long duration = isClick ? 10 + level * 3L : 15 + level * 6L;
 		if (isHold) {
 			duration = duration * 3 / 2;
 		}
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			int amplitude = isClick ? Math.min(255, 130 + level * 13) : Math.min(255, 5 + level * 25);
+			int amplitude = isClick ? 255 : Math.min(255, 5 + level * 25);
 			if (!vibrator.hasAmplitudeControl()) {
 				amplitude = VibrationEffect.DEFAULT_AMPLITUDE;
 			}

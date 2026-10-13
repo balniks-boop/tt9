@@ -158,11 +158,14 @@ public class SoftKeyNumber0 extends SoftKeyNumberSwipeable {
 		final SpannableStringBuilder text = new SpannableStringBuilder(title).append("\n").append(code);
 		final int codeStart = title.length() + 1;
 
-		text.setSpan(new RelativeSizeSpan(getTitleScale()), 0, title.length(), 0);
-		text.setSpan(new RelativeSizeSpan(0.55f * Math.min(1, getTT9Height()) * getScreenSizeScale()), codeStart, text.length(), 0);
-		text.setSpan(new ForegroundColorSpan(ColorUtils.setAlphaComponent(textColor, 140)), codeStart, text.length(), 0);
+		// a bigger space symbol on top, and a small, faded language code centered below it
+		text.setSpan(new RelativeSizeSpan(getTitleScale() * 1.25f), 0, title.length(), 0);
+		text.setSpan(new RelativeSizeSpan(0.5f * Math.min(1, getTT9Height()) * getScreenSizeScale()), codeStart, text.length(), 0);
+		text.setSpan(new ForegroundColorSpan(ColorUtils.setAlphaComponent(textColor, 130)), codeStart, text.length(), 0);
 
-		setLineSpacing(0, 0.85f);
+		setGravity(android.view.Gravity.CENTER);
+		setLineSpacing(0, 1.0f);
+		setIncludeFontPadding(false);
 		setText(text);
 	}
 

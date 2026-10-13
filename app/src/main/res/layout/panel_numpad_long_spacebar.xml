@@ -10,6 +10,7 @@
 			style="@style/TTheme.Numpad.Key.Number"
 			android:id="@+id/soft_key_text_201" />
 		<include layout="@layout/key_overlay_icons" />
+		<include layout="@layout/key_overlay_number_hold_text" />
 		<include layout="@layout/key_overlay_side_text" />
 	</RelativeLayout>
 
@@ -28,6 +29,7 @@
 			style="@style/TTheme.Numpad.Key.Number"
 			android:id="@+id/soft_key_text_202" />
 		<include layout="@layout/key_overlay_icons" />
+		<include layout="@layout/key_overlay_number_hold_text" />
 		<include layout="@layout/key_overlay_side_text" />
 	</RelativeLayout>
 

@@ -27,10 +27,15 @@ public class SoftKeyTextRight extends SoftKeyText {
 	protected String getKeyChar() {
 		if (tt9 == null) return "";
 		if (tt9.isInputTypePhone()) return "#";
-		if (tt9.isInputModeNumeric()) return ".";
+		if (tt9.isInputModeNumeric()) return "€";
 		if (tt9.isTextEditingActive()) return CmdRedo.iconTxt;
 
 		return Characters.getChar(tt9.getLanguage(), SettingsStore.SOFT_KEY_TEXT_RIGHT_DEFAULT);
+	}
+
+	@Override
+	protected String getHoldChar() {
+		return tt9 != null && tt9.isInputModeNumeric() && !tt9.isInputTypePhone() && !tt9.isTextEditingActive() ? "$" : null;
 	}
 
 	@Override

@@ -360,7 +360,7 @@
 	</style>
 
 	<style name="TTheme.Numpad.Key.LongSpace.Overlay.Wrapper" parent="TTheme.Numpad.Key.Overlay.Wrapper">
-		<item name="android:layout_weight">3</item>
+		<item name="android:layout_weight">4</item>
 		<item name="android:layout_width">0dp</item>
 	</style>
 

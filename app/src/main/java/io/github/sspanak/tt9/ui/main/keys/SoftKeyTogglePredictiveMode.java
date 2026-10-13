@@ -3,11 +3,14 @@ package io.github.sspanak.tt9.ui.main.keys;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import io.github.sspanak.tt9.commands.CmdTogglePredictiveMode;
+import io.github.sspanak.tt9.commands.CmdNextInputMode;
 import io.github.sspanak.tt9.ime.modes.InputModeKind;
 
+/**
+ * Mode key. Cycles: T9 (predictive) -> ABC (letter by letter) -> 123 (numbers) -> T9...
+ */
 public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
-	private final CmdTogglePredictiveMode toggleMode = new CmdTogglePredictiveMode();
+	private final CmdNextInputMode nextMode = new CmdNextInputMode();
 
 	public SoftKeyTogglePredictiveMode(Context context) { super(context); }
 	public SoftKeyTogglePredictiveMode(Context context, AttributeSet attrs) { super(context, attrs); }
@@ -15,12 +18,12 @@ public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 
 	@Override
 	protected boolean handleRelease() {
-		return toggleMode.run(tt9);
+		return nextMode.run(tt9);
 	}
 
 	@Override
 	protected String getAccessibilityText() {
-		return toggleMode.getName(tt9);
+		return nextMode.getName(tt9);
 	}
 
 	@Override
@@ -30,9 +33,11 @@ public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 		}
 
 		if (InputModeKind.isPredictive(tt9.getInputMode())) {
-			return tt9.getInputModeName();
+			return "T9";
 		} else if (tt9.isInputModeNumeric()) {
-			return "--";
+			return "123";
+		} else if (tt9.isInputModeABC()) {
+			return "ABC";
 		} else {
 			return tt9.getInputModeName();
 		}
@@ -40,12 +45,17 @@ public class SoftKeyTogglePredictiveMode extends BaseSoftKeyCustomizable {
 
 	@Override
 	protected float getTitleScale() {
-		return super.getTitleScale() * (isBopomofo() && tt9.isInputModeABC() ? 0.63f : 0.9f);
+		return super.getTitleScale() * 0.9f;
+	}
+
+	@Override
+	public boolean isDynamic() {
+		return true;
 	}
 
 	@Override
 	public void render() {
-		setEnabled(toggleMode.isAvailable(tt9));
+		setEnabled(nextMode.isAvailable(tt9));
 		super.render();
 	}
 }

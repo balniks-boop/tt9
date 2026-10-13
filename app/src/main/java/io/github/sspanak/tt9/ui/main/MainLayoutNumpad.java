@@ -166,6 +166,11 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		addKey(R.id.soft_key_extra_question);
 		addKey(R.id.soft_key_extra_at);
 		addKey(R.id.soft_key_extra_symbols);
+		addKey(R.id.soft_key_extra_plus);
+		addKey(R.id.soft_key_extra_minus);
+		addKey(R.id.soft_key_extra_times);
+		addKey(R.id.soft_key_extra_divide);
+		addKey(R.id.soft_key_extra_equals);
 
 		return keys;
 	}
@@ -174,6 +179,12 @@ class MainLayoutNumpad extends MainLayoutClassic {
 	private void reorderFnKeys() {
 		String lfnOrder = tt9.getSettings().getLfnKeyOrder();
 		String rfnOrder = tt9.getSettings().getRfnKeyOrder();
+
+		// In 123 mode, swap the text keys for calculator keys: ! ? @ SYM -> + − × ÷, Shift -> =
+		if (tt9.isInputModeNumeric()) {
+			lfnOrder = toCalculatorOrder(lfnOrder);
+			rfnOrder = toCalculatorOrder(rfnOrder);
+		}
 
 		final String newOrder = lfnOrder + "," + rfnOrder;
 		if (newOrder.equals(lastFnKeyOrder)) {
@@ -203,6 +214,17 @@ class MainLayoutNumpad extends MainLayoutClassic {
 
 		lastFnKeyOrder = newOrder;
 		Logger.d(LOG_TAG, "Reordered keys: '" + lastFnKeyOrder + "'");
+	}
+
+
+	@NonNull
+	private static String toCalculatorOrder(@NonNull String order) {
+		return order
+			.replace('X', 'P')
+			.replace('Q', 'M')
+			.replace('A', 'K')
+			.replace('S', 'D')
+			.replace('3', 'Y');
 	}
 
 

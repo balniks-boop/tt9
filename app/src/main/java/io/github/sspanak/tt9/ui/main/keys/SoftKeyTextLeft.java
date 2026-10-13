@@ -35,6 +35,11 @@ public class SoftKeyTextLeft extends SoftKeyText {
 	}
 
 	@Override
+	protected String getHoldChar() {
+		return tt9 != null && tt9.isInputModeNumeric() && !tt9.isInputTypePhone() && !tt9.isTextEditingActive() ? "." : null;
+	}
+
+	@Override
 	protected String getTitle() {
 		return isTextEditingOn() ? "" : super.getTitle();
 	}

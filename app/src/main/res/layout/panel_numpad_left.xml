@@ -110,4 +110,40 @@
 			style="@style/TTheme.Numpad.Key.Large"
 			android:id="@+id/soft_key_extra_symbols" />
 	</RelativeLayout>
+
+	<!-- calculator keys, shown in 123 mode -->
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_p">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_plus" />
+		<include layout="@layout/key_overlay_number_hold_text" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_m">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_minus" />
+		<include layout="@layout/key_overlay_number_hold_text" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_k">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_times" />
+		<include layout="@layout/key_overlay_number_hold_text" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_d">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_divide" />
+		<include layout="@layout/key_overlay_number_hold_text" />
+	</RelativeLayout>
+
+	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_y">
+		<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunctuation
+			style="@style/TTheme.Numpad.Key.Large"
+			android:id="@+id/soft_key_extra_equals" />
+		<include layout="@layout/key_overlay_number_hold_text" />
+	</RelativeLayout>
 </LinearLayout>

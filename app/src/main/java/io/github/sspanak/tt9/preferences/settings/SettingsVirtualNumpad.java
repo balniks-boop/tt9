@@ -49,6 +49,12 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		put('Q', R.id.soft_key_wrapper_q);
 		put('A', R.id.soft_key_wrapper_a);
 		put('S', R.id.soft_key_wrapper_s);
+		// calculator keys, used automatically in 123 mode
+		put('P', R.id.soft_key_wrapper_p);
+		put('M', R.id.soft_key_wrapper_m);
+		put('K', R.id.soft_key_wrapper_k);
+		put('D', R.id.soft_key_wrapper_d);
+		put('Y', R.id.soft_key_wrapper_y);
 	}};
 
 	SettingsVirtualNumpad(Context context) {

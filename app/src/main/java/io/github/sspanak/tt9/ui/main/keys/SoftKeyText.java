@@ -30,6 +30,30 @@ abstract public class SoftKeyText extends BaseSwipeableKey {
 	abstract protected String getKeyChar();
 
 
+	/**
+	 * Optional character typed when holding the key. Shown in the top-right corner.
+	 */
+	protected String getHoldChar() { return null; }
+
+
+	@Override
+	protected void handleHold() {
+		final String chr = getHoldChar();
+		if (chr == null || tt9 == null) {
+			return;
+		}
+
+		preventRepeat();
+		tt9.onText(chr, false);
+	}
+
+
+	@Override
+	protected String getHoldText() {
+		return getHoldChar();
+	}
+
+
 	protected boolean isTextEditingOn() {
 		return tt9 != null && tt9.isTextEditingActive();
 	}

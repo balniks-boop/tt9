@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import io.github.sspanak.tt9.preferences.screens.keypad.DropDownVibrationType;
 import io.github.sspanak.tt9.preferences.settings.SettingsStore;
 import io.github.sspanak.tt9.ui.main.keys.BaseClickableKey;
 import io.github.sspanak.tt9.util.Logger;
@@ -79,13 +80,19 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 			return false;
 		}
 
-		long duration = 15 + level * 6L; // 21..75 ms
+		final boolean isClick = settings.getVibrationType() == DropDownVibrationType.TYPE_CLICK;
+
+		// soft: a longer, gentler buzz (21..75 ms); click: a short, strong, dry tap (12..30 ms)
+		long duration = isClick ? 10 + level * 2L : 15 + level * 6L;
 		if (isHold) {
 			duration = duration * 3 / 2;
 		}
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			final int amplitude = vibrator.hasAmplitudeControl() ? Math.min(255, 5 + level * 25) : VibrationEffect.DEFAULT_AMPLITUDE;
+			int amplitude = isClick ? Math.min(255, 130 + level * 13) : Math.min(255, 5 + level * 25);
+			if (!vibrator.hasAmplitudeControl()) {
+				amplitude = VibrationEffect.DEFAULT_AMPLITUDE;
+			}
 			vibrator.vibrate(VibrationEffect.createOneShot(duration, amplitude));
 		} else {
 			vibrator.vibrate(duration);

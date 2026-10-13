@@ -20,6 +20,7 @@ import io.github.sspanak.tt9.preferences.screens.appearanceUnfolded.DropDownBott
 import io.github.sspanak.tt9.preferences.screens.appearanceUnfolded.DropDownSuggestionFontSizeUnfolded;
 import io.github.sspanak.tt9.preferences.screens.appearanceUnfolded.DropDownWidthUnfolded;
 import io.github.sspanak.tt9.preferences.screens.keypad.DropDownVibrationStrength;
+import io.github.sspanak.tt9.preferences.screens.keypad.DropDownVibrationType;
 import io.github.sspanak.tt9.preferences.screens.keypad.SwitchHapticFeedback;
 import io.github.sspanak.tt9.util.Logger;
 import io.github.sspanak.tt9.util.sys.DeviceInfo;
@@ -114,6 +115,10 @@ public class SettingsUI extends SettingsTyping {
 	/** 0 = system haptic feedback; 1..10 = custom vibration, from weakest to strongest */
 	public int getVibrationStrength() {
 		return Math.max(0, Math.min(10, getStringifiedInt(DropDownVibrationStrength.NAME, DropDownVibrationStrength.DEFAULT)));
+	}
+
+	public int getVibrationType() {
+		return getStringifiedInt(DropDownVibrationType.NAME, DropDownVibrationType.DEFAULT);
 	}
 
 	public boolean getHapticFeedback() {

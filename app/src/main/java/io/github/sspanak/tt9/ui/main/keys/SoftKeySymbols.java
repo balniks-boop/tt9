@@ -6,12 +6,18 @@ import android.view.KeyEvent;
 
 import io.github.sspanak.tt9.commands.CmdShowEmojis;
 import io.github.sspanak.tt9.ime.helpers.Key;
+import io.github.sspanak.tt9.ime.modes.InputMode;
+import io.github.sspanak.tt9.ime.modes.InputModeKind;
+import io.github.sspanak.tt9.ui.tray.SuggestionsBar;
 
 /**
- * "SYM" key, inspired by the TyNi T9 layout. A tap opens the punctuation and symbols list
- * (same as tapping the 1-key). Holding it opens the emoji list.
+ * "SYM" key, inspired by the TyNi T9 layout.
+ * - Tap: opens the symbol list. Tapping again switches between "symbols" and "more symbols".
+ *   It never jumps to the emojis. Backspace closes the list without typing anything.
+ * - Hold: opens the emoji list.
  */
 public class SoftKeySymbols extends BaseSoftKeyCustomizable {
+	private static final int MAX_BACKSPACES = 20;
 	private final CmdShowEmojis showEmojis = new CmdShowEmojis();
 
 	public SoftKeySymbols(Context context) { super(context); }
@@ -28,8 +34,36 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 
 	@Override
 	protected boolean handleRelease() {
-		int keyCode = Key.numberToCode(tt9 != null ? tt9.getSettings() : null, 1);
-		if (keyCode < 0 || !validateTT9Handler()) {
+		if (!validateTT9Handler()) {
+			return false;
+		}
+
+		final InputMode mode = tt9.getInputMode();
+		final boolean isSymbolSequence = mode != null && InputModeKind.isPredictive(mode) && mode.getFirstKey() == 1;
+
+		if (!isSymbolSequence) {
+			return pressKey1();
+		}
+
+		final int length = mode.getSequenceLength();
+
+		// "symbols" -> "more symbols"
+		if (length == 1) {
+			return mode.onReplaceSuggestion(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
+		}
+
+		// "more symbols" or emojis -> back to "symbols"
+		for (int i = 0; i < MAX_BACKSPACES && mode.getFirstKey() == 1 && mode.getSequenceLength() > 1; i++) {
+			tt9.onBackspace(0);
+		}
+
+		return true;
+	}
+
+
+	private boolean pressKey1() {
+		int keyCode = Key.numberToCode(tt9.getSettings(), 1);
+		if (keyCode < 0) {
 			return false;
 		}
 

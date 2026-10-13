@@ -41,6 +41,7 @@ import io.github.sspanak.tt9.util.sys.DeviceInfo;
 
 abstract public class BaseMainLayout {
 	private int lastLandscapeBottomInset = -1;
+	private int lastPortraitBottomInset = 0;
 
 	protected final TraditionalT9 tt9;
 	private final int xml;
@@ -123,7 +124,9 @@ abstract public class BaseMainLayout {
 			bottomPadding = lastLandscapeBottomInset = insets.bottom;
 		} else {
 			tt9.getSettings().setSamsungBottomPaddingPortrait(Math.round(insets.bottom / DeviceInfo.getScreenPixelDensity(view.getContext())));
-			bottomPadding = tt9.getSettings().getBottomPaddingPortraitPx();
+			lastPortraitBottomInset = DeviceInfo.IS_SAMSUNG ? 0 : insets.bottom;
+			// never go below the real navigation bar height, otherwise the bottom row gets hidden
+			bottomPadding = Math.max(lastPortraitBottomInset, tt9.getSettings().getBottomPaddingPortraitPx());
 		}
 
 		v.setPadding(insets.left, 0, insets.right, bottomPadding);
@@ -144,7 +147,7 @@ abstract public class BaseMainLayout {
 		if (DeviceInfo.isLandscapeOrientation(tt9)) {
 			bottomPadding = lastLandscapeBottomInset >= 0 ? lastLandscapeBottomInset : view.getPaddingBottom();
 		} else {
-			bottomPadding = tt9.getSettings().getBottomPaddingPortraitPx();
+			bottomPadding = Math.max(lastPortraitBottomInset, tt9.getSettings().getBottomPaddingPortraitPx());
 		}
 
 		view.setPadding(view.getPaddingLeft(), 0, view.getPaddingRight(), bottomPadding);

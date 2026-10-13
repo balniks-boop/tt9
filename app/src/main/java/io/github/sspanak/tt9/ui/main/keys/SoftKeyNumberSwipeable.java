@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 import io.github.sspanak.tt9.R;
 import io.github.sspanak.tt9.commands.CmdFilterSuggestions;
 import io.github.sspanak.tt9.commands.CmdMoveCursor;
@@ -37,18 +39,18 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 			final String actionKey = ActionKey.numberToActionKey(number);
 
 			isSwipeable =
-				(number == 0 && tt9.getSettings().getMoveCursorWithSpace())
+				number == 0 // the spacebar always swipes: to switch languages or to move the cursor
 				|| (getNumber() > 0 && !(tt9.getSettings().getSwipeLeftCommand(actionKey).isEmpty() && tt9.getSettings().getSwipeRightCommand(actionKey).isEmpty()));
 		}
 	}
 
 
 	@Override
-	protected String getRightText() { return is0Swipeable() && getNumber() == 0 ? getContext().getString(R.string.key_dpad_right) : super.getRightText(); }
+	protected String getRightText() { return is0Swipeable() && !isLanguageSwipe() && getNumber() == 0 ? getContext().getString(R.string.key_dpad_right) : super.getRightText(); }
 
 
 	@Override
-	protected String getLeftText() { return is0Swipeable() && getNumber() == 0 ? getContext().getString(R.string.key_dpad_left) : super.getLeftText(); }
+	protected String getLeftText() { return is0Swipeable() && !isLanguageSwipe() && getNumber() == 0 ? getContext().getString(R.string.key_dpad_left) : super.getLeftText(); }
 
 
 	@Override
@@ -103,7 +105,7 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	 */
 	@Override
 	protected void handleSwipeX(float screenX, float delta) {
-		if (is0Swipeable()) {
+		if (is0Swipeable() && !isLanguageSwipe()) {
 			moveCursor(screenX);
 		}
 	}
@@ -115,6 +117,11 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	 */
 	@Override
 	protected void handleEndSwipeX(float position, float delta) {
+		if (is0Swipeable() && isLanguageSwipe()) {
+			swipeCommandRan = switchLanguage(delta > 0);
+			return;
+		}
+
 		Command cmd = getSwipeCommand(delta < 0);
 
 		// avoid executing commands during voice input, to prevent undesired actions
@@ -171,6 +178,41 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	}
 
 
+	/**
+	 * TouchPal-style spacebar: when more than one language is enabled, swiping the spacebar
+	 * left-to-right goes to the next language, and right-to-left goes to the previous one.
+	 */
+	private boolean isLanguageSwipe() {
+		return
+			tt9 != null
+			&& getNumber() == 0
+			&& !tt9.isInputModeNumeric()
+			&& !tt9.isTextEditingActive()
+			&& tt9.getSettings().areEnabledLanguagesMoreThanN(1);
+	}
+
+
+	private boolean switchLanguage(boolean next) {
+		if (tt9 == null) {
+			return false;
+		}
+
+		ArrayList<Integer> languages = tt9.getSettings().getEnabledLanguageIds();
+		if (languages.size() < 2) {
+			return false;
+		}
+
+		final int currentId = tt9.getLanguage() != null ? tt9.getLanguage().getId() : -1;
+		final int current = Math.max(0, languages.indexOf(currentId));
+		final int target = (current + (next ? 1 : -1) + languages.size()) % languages.size();
+
+		tt9.getSuggestionOps().cancelDelayedAccept();
+		tt9.stopVoiceInput();
+		tt9.setLang(languages.get(target));
+		return true;
+	}
+
+
 	private boolean is0Swipeable() {
 		boolean fnPanelOn = isFnPanelOn();
 
@@ -188,7 +230,7 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	 */
 	private void moveCursor(float screenX) {
 		float delta = previousX - screenX;
-		if (tt9 == null || Math.abs(delta) <= tt9.getSettings().getMoveCursorWithSpaceThreshold()) {
+		if (tt9 == null || !tt9.getSettings().getMoveCursorWithSpace() || Math.abs(delta) <= tt9.getSettings().getMoveCursorWithSpaceThreshold()) {
 			return;
 		}
 

@@ -8,6 +8,18 @@
 		android:id="@+id/soft_key_left_arrow"
 		android:text="@string/key_dpad_left" />
 
+	<io.github.sspanak.tt9.ui.main.keys.SoftKeyCurrency
+		style="@style/TTheme.Numpad.Key.Arrow"
+		android:id="@+id/soft_key_currency_euro"
+		android:layout_width="@dimen/numpad_toolbar_button_width"
+		android:visibility="gone" />
+
+	<io.github.sspanak.tt9.ui.main.keys.SoftKeyCurrency
+		style="@style/TTheme.Numpad.Key.Arrow"
+		android:id="@+id/soft_key_currency_dollar"
+		android:layout_width="@dimen/numpad_toolbar_button_width"
+		android:visibility="gone" />
+
 	<FrameLayout style="@style/TTheme.Numpad.StatusBar.Wrapper">
 		<include layout="@layout/panel_status_bar" />
 	</FrameLayout>

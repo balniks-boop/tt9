@@ -17,6 +17,7 @@ import io.github.sspanak.tt9.preferences.settings.SettingsStore;
 import io.github.sspanak.tt9.preferences.settings.SettingsVirtualNumpad;
 import io.github.sspanak.tt9.ui.main.keys.SoftKey;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyArrow;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyCurrency;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyText;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarNumeric;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarSettings;
@@ -86,7 +87,7 @@ class MainLayoutNumpad extends MainLayoutClassic {
 			}
 
 			// the toolbar keeps its own, smaller height
-			if (key instanceof SoftKeyToolbarSettings || key instanceof SoftKeyToolbarNumeric) {
+			if (key instanceof SoftKeyToolbarSettings || key instanceof SoftKeyToolbarNumeric || key instanceof SoftKeyCurrency) {
 				continue;
 			}
 

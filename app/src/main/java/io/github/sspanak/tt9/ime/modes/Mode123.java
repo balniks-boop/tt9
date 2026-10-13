@@ -71,7 +71,7 @@ class Mode123 extends ModePassthrough {
 	private void setDefaultSpecialCharacters() {
 		Language sortLang = language instanceof NullLanguage ? LanguageCollection.getDefault() : language;
 		KEY_CHARACTERS.add(
-			addCurrencies(TextTools.removeLettersFromList(orderCharsForNumericField(settings.getOrderedKeyChars(sortLang, 0))))
+			TextTools.removeLettersFromList(orderCharsForNumericField(settings.getOrderedKeyChars(sortLang, 0)))
 		);
 		KEY_CHARACTERS.add(
 			TextTools.removeLettersFromList(orderCharsForNumericField(settings.getOrderedKeyChars(sortLang, 1)))

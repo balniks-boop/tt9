@@ -6,9 +6,10 @@ import android.util.AttributeSet;
 import io.github.sspanak.tt9.commands.CmdShowSettings;
 
 /**
- * Toolbar button: opens the keyboard settings directly.
+ * Toolbar button: opens the keyboard settings directly. Drawn as a text gear, so it fits in
+ * the thin toolbar without needing an icon overlay.
  */
-public class SoftKeyToolbarSettings extends BaseSoftKeyWithIcons {
+public class SoftKeyToolbarSettings extends BaseSoftKeyCustomizable {
 	private final CmdShowSettings command = new CmdShowSettings();
 
 	public SoftKeyToolbarSettings(Context context) { super(context); }
@@ -17,6 +18,6 @@ public class SoftKeyToolbarSettings extends BaseSoftKeyWithIcons {
 
 	@Override protected boolean handleRelease() { return command.run(tt9); }
 	@Override protected String getAccessibilityText() { return tt9 != null ? command.getName(tt9) : null; }
-	@Override protected int getCentralIcon() { return command.getIcon(); }
-	@Override protected float getCentralIconScale() { return 0.7f; }
+	@Override protected String getTitle() { return "⚙︎"; } // text-style gear, not the colored emoji
+	@Override protected float getTitleScale() { return 1.0f; }
 }

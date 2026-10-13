@@ -110,6 +110,15 @@ public class SettingsUI extends SettingsTyping {
 		return folded == null ? isFolded : folded;
 	}
 
+	/** 0 = system haptic feedback; 1..10 = custom vibration, from weakest to strongest */
+	public int getVibrationStrength() {
+		try {
+			return Math.max(0, Math.min(10, prefs.getInt("pref_vibration_strength", 6)));
+		} catch (Exception e) {
+			return 6;
+		}
+	}
+
 	public boolean getHapticFeedback() {
 		return prefs.getBoolean(SwitchHapticFeedback.NAME, SwitchHapticFeedback.DEFAULT);
 	}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:orderingFromXml="true">
 
 	<PreferenceCategory android:title="@string/pref_category_typing">
@@ -44,6 +45,16 @@
 
 	<PreferenceCategory android:title="@string/pref_category_keypad_onscreen" android:key="category_virtual_keys">
 		<io.github.sspanak.tt9.preferences.screens.keypad.SwitchHapticFeedback />
+		<SeekBarPreference
+			android:key="pref_vibration_strength"
+			android:title="Intensidade da vibração"
+			android:summary="0 = vibração normal do sistema. 1 a 10 = mais fraca até mais forte."
+			android:max="10"
+			android:defaultValue="6"
+			app:min="0"
+			app:seekBarIncrement="1"
+			app:showSeekBarValue="true"
+			app:updatesContinuously="true" />
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="@string/pref_category_keypad_hardware">

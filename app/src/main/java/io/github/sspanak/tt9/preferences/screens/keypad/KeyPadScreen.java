@@ -45,6 +45,11 @@ public class KeyPadScreen extends BaseScreenFragment {
 			return;
 		}
 
+		Preference vibration = findPreference(DropDownVibrationStrength.NAME);
+		if (vibration instanceof DropDownVibrationStrength) {
+			((DropDownVibrationStrength) vibration).populate(activity.getSettings()).preview();
+		}
+
 		// hide the entire category when the settings show no interest in it
 		final boolean isVisible = activity.getSettings().isMainLayoutLarge() || activity.getSettings().isMainLayoutSmall();
 		final PreferenceCategory category = findPreference("category_virtual_keys");

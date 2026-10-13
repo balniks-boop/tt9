@@ -47,6 +47,10 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 
 		try {
 			final int strength = settings.getVibrationStrength();
+			if (vibrationType == getNoVibration()) {
+				return;
+			}
+
 			if (strength > 0 && vibrationType != getReleaseVibration() && vibrateCustom(strength, vibrationType == getHoldVibration())) {
 				return;
 			}
@@ -63,7 +67,7 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 
 	/**
 	 * Vibrate with the motor directly, so the strength can be adjusted in the settings.
-	 * Level 1..10 -> 12..48 ms, and the amplitude grows with the level when the phone supports it.
+	 * Level 1..10 -> 21..75 ms, and the amplitude grows with the level when the phone supports it.
 	 */
 	private boolean vibrateCustom(int level, boolean isHold) {
 		if (view == null) {
@@ -75,7 +79,7 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 			return false;
 		}
 
-		long duration = 8 + level * 4L;
+		long duration = 15 + level * 6L; // 21..75 ms
 		if (isHold) {
 			duration = duration * 3 / 2;
 		}

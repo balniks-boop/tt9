@@ -9,7 +9,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import io.github.sspanak.tt9.preferences.screens.keypad.DropDownVibrationType;
 import io.github.sspanak.tt9.preferences.settings.SettingsStore;
 import io.github.sspanak.tt9.ui.main.keys.BaseClickableKey;
 import io.github.sspanak.tt9.util.Logger;
@@ -80,17 +79,14 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 			return false;
 		}
 
-		final boolean isClick = settings.getVibrationType() == DropDownVibrationType.TYPE_CLICK;
 
-
-		// soft: a longer, gentler buzz (21..75 ms); click: a short tap at full motor power (13..40 ms)
-		long duration = isClick ? 10 + level * 3L : 15 + level * 6L;
+		long duration = 15 + level * 6L; // 21..75 ms
 		if (isHold) {
 			duration = duration * 3 / 2;
 		}
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			int amplitude = isClick ? 255 : Math.min(255, 5 + level * 25);
+			int amplitude = Math.min(255, 5 + level * 25);
 			if (!vibrator.hasAmplitudeControl()) {
 				amplitude = VibrationEffect.DEFAULT_AMPLITUDE;
 			}
@@ -99,23 +95,6 @@ public record Vibration(@NonNull SettingsStore settings, @Nullable View view) {
 			vibrator.vibrate(duration);
 		}
 		return true;
-	}
-
-
-	private boolean vibrateClick(@NonNull Vibrator vibrator, int level, boolean isHold) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && vibrator.areAllPrimitivesSupported(VibrationEffect.Composition.PRIMITIVE_CLICK)) {
-			final float scale = Math.min(1f, 0.1f * level + (isHold ? 0.2f : 0f));
-			vibrator.vibrate(VibrationEffect.startComposition().addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, scale).compose());
-			return true;
-		}
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-			final int effect = (level >= 6 || isHold) ? VibrationEffect.EFFECT_HEAVY_CLICK : (level <= 3 ? VibrationEffect.EFFECT_TICK : VibrationEffect.EFFECT_CLICK);
-			vibrator.vibrate(VibrationEffect.createPredefined(effect));
-			return true;
-		}
-
-		return false;
 	}
 
 

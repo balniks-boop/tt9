@@ -65,7 +65,7 @@ public abstract class TypingHandler extends KeyPadHandler {
 
 
 	protected void createSuggestionBar() {
-		suggestionOps = new SuggestionOps(this, settings, mainView, appHacks, inputType, textField, statusBar, this::onAcceptSuggestionsDelayed, this::onOK, () -> onOK(KeyEvent.KEYCODE_UNKNOWN));
+		suggestionOps = new SuggestionOps(this, settings, mainView, appHacks, inputType, textField, statusBar, this::onAcceptSuggestionsDelayed, this::onSuggestionTapped, () -> onOK(KeyEvent.KEYCODE_UNKNOWN));
 	}
 
 
@@ -301,6 +301,12 @@ public abstract class TypingHandler extends KeyPadHandler {
 		updateShiftState(surroundingChars[0], false, false);
 
 		return true;
+	}
+
+
+	/** Called when a word is tapped on the suggestions bar. Overridden in SuggestionHandler. */
+	protected void onSuggestionTapped() {
+		onOK();
 	}
 
 

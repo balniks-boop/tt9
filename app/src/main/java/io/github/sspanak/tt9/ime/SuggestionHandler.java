@@ -84,6 +84,48 @@ abstract public class SuggestionHandler extends TypingHandler {
 	}
 
 
+	private boolean isSuggestionTapped = false;
+
+	/** A word was chosen by tapping it on the suggestions bar. */
+	@Override
+	protected void onSuggestionTapped() {
+		isSuggestionTapped = true;
+		try {
+			onOK();
+		} finally {
+			isSuggestionTapped = false;
+		}
+	}
+
+
+	/**
+	 * Add a space after a word chosen from the list, if the option is on and there is no space yet.
+	 * Only for real words (ending in a letter or a digit), never after symbols or in e-mail/password fields.
+	 */
+	@NonNull
+	private String[] addSpaceAfterTappedWord(@NonNull String word, @NonNull String[] surroundingText) {
+		if (
+			!isSuggestionTapped
+			|| !settings.getSpaceAfterChosenWord()
+			|| word.isEmpty()
+			|| !Character.isLetterOrDigit(word.codePointBefore(word.length()))
+			|| inputType.isLimited() || inputType.isSpecialized()
+			|| InputModeKind.isNumeric(mInputMode)
+		) {
+			return surroundingText;
+		}
+
+		final String before = textField.getStringBeforeCursor(1);
+		final String after = textField.getStringAfterCursor(1);
+		if (before.endsWith(" ") || after.startsWith(" ")) {
+			return surroundingText;
+		}
+
+		textField.setText(" ");
+		return new String[] { surroundingText[0] + " ", surroundingText[1] };
+	}
+
+
 	public void onAcceptSuggestionManually(String word, int fromKey) {
 		mInputMode.onAcceptSuggestion(word);
 		if (Clipboard.contains(word)) {
@@ -97,6 +139,8 @@ abstract public class SuggestionHandler extends TypingHandler {
 				true,
 				fromKey
 			);
+
+			surroundingText = addSpaceAfterTappedWord(word, surroundingText);
 
 			mInputMode.determineNextWordTextCase(surroundingText[0], -1);
 			updateShiftState(surroundingText[0], false, false);

@@ -1,5 +1,7 @@
 package io.github.sspanak.tt9.ime;
 
+import io.github.sspanak.tt9.ime.modes.InputMode;
+
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -82,6 +84,13 @@ public class TraditionalT9 extends PremiumHandler {
 	@Override
 	public void onFinishInputView(boolean finishingInput) {
 		super.onFinishInputView(finishingInput);
+
+		// Always reopen in T9: if the keyboard was closed in ABC or 123, forget it. Fields that
+		// require numbers still open in 123, because they do not allow T9.
+		final int savedMode = settings.getInputMode();
+		if (settings.getPredictiveMode() && (savedMode == InputMode.MODE_ABC || savedMode == InputMode.MODE_123)) {
+			settings.saveInputMode(InputMode.MODE_PREDICTIVE);
+		}
 		onFinishTyping(finishingInput);
 	}
 

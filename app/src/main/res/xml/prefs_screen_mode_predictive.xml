@@ -15,6 +15,13 @@
 	<SwitchPreferenceCompat
 		android:defaultValue="true"
 		android:dependency="pref_predictive_mode"
+		android:key="pref_space_after_chosen_word"
+		android:summary="Ao tocar numa palavra da lista de sugestões, é acrescentado um espaço a seguir."
+		android:title="Espaço depois de escolher uma palavra" />
+
+	<SwitchPreferenceCompat
+		android:defaultValue="true"
+		android:dependency="pref_predictive_mode"
 		android:key="auto_text_case_predictive"
 		android:summary="@string/pref_auto_text_case_summary"
 		android:title="@string/pref_auto_text_case" />

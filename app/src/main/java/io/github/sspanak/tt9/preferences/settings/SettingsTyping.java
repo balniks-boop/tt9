@@ -37,6 +37,7 @@ class SettingsTyping extends SettingsMindReading {
 		return time > 0 ? time + getKeyPadDebounceTime() : time;
 	}
 	public boolean getAutoSpacePredictive() { return prefs.getBoolean("auto_space_predictive", true); }
+	public boolean getSpaceAfterChosenWord() { return prefs.getBoolean("pref_space_after_chosen_word", true); }
 	public boolean getAutoTextCasePredictive() { return prefs.getBoolean("auto_text_case_predictive", true); }
 	public boolean getAutoCapitalsAfterNewlinePredictive() {
 		return getAutoTextCasePredictive() && prefs.getBoolean("auto_capitals_after_newline_predictive", false);

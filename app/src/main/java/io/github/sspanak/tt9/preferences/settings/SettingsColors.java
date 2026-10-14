@@ -46,6 +46,12 @@ public class SettingsColors extends SettingsHotkeys {
 	}
 
 
+	public boolean isOutlineColorScheme() {
+		colorScheme = invalidateScheme(colorScheme);
+		return colorScheme instanceof io.github.sspanak.tt9.colors.ColorSchemeOutline;
+	}
+
+
 	public boolean getDarkTheme() {
 		return ColorUtils.calculateLuminance(getKeyboardBackground()) < 0.5;
 	}

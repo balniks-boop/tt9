@@ -321,6 +321,22 @@ public class SoftKey extends BaseClickableKey {
 
 
 	/**
+	 * The outline themes use a slightly thicker, rounded border, so it is visible but still subtle.
+	 */
+	private int getBorderWidth() {
+		if (borderColor.getDefaultColor() == Color.TRANSPARENT) {
+			return 0;
+		}
+
+		if (tt9 != null && tt9.getSettings().isOutlineColorScheme()) {
+			return Math.max(2, Math.round(1.5f * getResources().getDisplayMetrics().density));
+		}
+
+		return 2;
+	}
+
+
+	/**
 	 * render
 	 * Sets the key labels, colors and icons using. Potentially, it can also adjust padding and margins and
 	 * other visual properties of the key.
@@ -330,7 +346,7 @@ public class SoftKey extends BaseClickableKey {
 		setContentDescription(getAccessibilityText());
 		setRippleColor(rippleColor);
 		setStrokeColor(borderColor);
-		setStrokeWidth(borderColor.getDefaultColor() == Color.TRANSPARENT ? 0 : 2);
+		setStrokeWidth(getBorderWidth());
 		setTextColor(textColor);
 
 		boolean isKeyEnabled = isEnabled();

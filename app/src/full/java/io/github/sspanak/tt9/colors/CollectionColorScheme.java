@@ -11,11 +11,12 @@ public class CollectionColorScheme {
 
 
 	public static AbstractColorScheme[] getAll(@NonNull Context context) {
-		return new AbstractColorScheme[] {
-			new ColorSchemeSystem(context),
-			new ColorSchemeSystemDark(context),
-			new ColorSchemeSystemLight(context)
-		};
+		java.util.ArrayList<AbstractColorScheme> all = new java.util.ArrayList<>();
+		all.add(new ColorSchemeSystem(context));
+		all.add(new ColorSchemeSystemDark(context));
+		all.add(new ColorSchemeSystemLight(context));
+		all.addAll(ColorSchemeOutline.getAll(context));
+		return all.toArray(new AbstractColorScheme[0]);
 	}
 
 

@@ -194,6 +194,7 @@ public class SuggestionsBar {
 		// single char
 		if (suggestion.equals(Characters.NEW_LINE)) return "\n";
 		if (suggestion.equals(Characters.TAB)) return "\t";
+		if (suggestion.equals(Characters.SPACE)) return " ";
 
 		suggestion = suggestion.replace(Characters.ZWNJ_GRAPHIC, Characters.ZWNJ);
 		suggestion = suggestion.replace(Characters.ZWJ_GRAPHIC, Characters.ZWJ);
@@ -419,6 +420,7 @@ public class SuggestionsBar {
 		return switch (suggestion) {
 			case "\n" -> Characters.NEW_LINE;
 			case "\t" -> Characters.TAB;
+			case " " -> Characters.SPACE; // show the space as a visible "␣" symbol
 			case Characters.ZWJ -> Characters.ZWJ_GRAPHIC;
 			case Characters.ZWNJ -> Characters.ZWNJ_GRAPHIC;
 			default -> suggestion;

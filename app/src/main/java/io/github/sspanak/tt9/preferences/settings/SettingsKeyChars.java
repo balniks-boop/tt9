@@ -174,12 +174,15 @@ class SettingsKeyChars extends SettingsInput {
 			}
 			case 1 -> {
 				chars = getChars1AsList(language);
-				// always offer these in the symbols list (the SYM key)
-				for (String extra : new String[] {"€", "$", "#", "*"}) {
-					if (!chars.contains(extra)) {
-						chars.add(extra);
-					}
-				}
+				// symbols list (the SYM key): € * # first, because they are used often; $ at the end
+				chars.remove("€");
+				chars.remove("*");
+				chars.remove("#");
+				chars.remove("$");
+				chars.add(0, "#");
+				chars.add(0, "*");
+				chars.add(0, "€");
+				chars.add("$");
 				if (!getCharsExtra(language, CHARS_GROUP_1).isEmpty()) {
 					chars.add(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
 				}

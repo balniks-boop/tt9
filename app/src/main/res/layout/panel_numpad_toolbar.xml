@@ -27,16 +27,6 @@
 		android:layout_height="match_parent"
 		android:layout_weight="1" />
 
-	<io.github.sspanak.tt9.ui.main.keys.SoftKeyCurrency
-		style="@style/TTheme.Numpad.Key.Toolbar"
-		android:id="@+id/soft_key_toolbar_euro"
-		android:layout_width="@dimen/numpad_toolbar_small_button_width" />
-
-	<io.github.sspanak.tt9.ui.main.keys.SoftKeyCurrency
-		style="@style/TTheme.Numpad.Key.Toolbar"
-		android:id="@+id/soft_key_toolbar_dollar"
-		android:layout_width="@dimen/numpad_toolbar_small_button_width" />
-
 	<io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarNumeric
 		style="@style/TTheme.Numpad.Key.Toolbar"
 		android:id="@+id/soft_key_toolbar_numeric"

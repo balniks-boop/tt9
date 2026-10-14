@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import io.github.sspanak.tt9.R;
 
 /**
- * € and $ buttons. In 123 mode they are on the suggestions bar; in T9 and ABC, on the toolbar.
+ * € and $ buttons, shown on the suggestions bar only in 123 mode.
  */
 public class SoftKeyCurrency extends BaseSoftKeyCustomizable {
 	public SoftKeyCurrency(Context context) { super(context); }
@@ -14,8 +14,7 @@ public class SoftKeyCurrency extends BaseSoftKeyCustomizable {
 	public SoftKeyCurrency(Context context, AttributeSet attrs, int defStyleAttr) { super(context, attrs, defStyleAttr); }
 
 	private String getChar() {
-		final int id = getId();
-		return id == R.id.soft_key_currency_dollar || id == R.id.soft_key_toolbar_dollar ? "$" : "€";
+		return getId() == R.id.soft_key_currency_dollar ? "$" : "€";
 	}
 
 	@Override
@@ -30,9 +29,7 @@ public class SoftKeyCurrency extends BaseSoftKeyCustomizable {
 
 	@Override
 	public void render() {
-		final boolean isToolbar = getId() == R.id.soft_key_toolbar_euro || getId() == R.id.soft_key_toolbar_dollar;
-		final boolean isNumeric = ModeSwitcher.isNumeric(tt9);
-		final boolean show = (isToolbar != isNumeric) && !(tt9 != null && tt9.isInputTypePhone());
+		final boolean show = ModeSwitcher.isNumeric(tt9) && !(tt9 != null && tt9.isInputTypePhone());
 		setVisibility(show ? VISIBLE : GONE);
 		super.render();
 	}

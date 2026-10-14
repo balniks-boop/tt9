@@ -187,8 +187,6 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		addKey(R.id.soft_key_toolbar_settings);
 		addKey(R.id.soft_key_toolbar_numeric);
 		addKey(R.id.soft_key_toolbar_add_word);
-		addKey(R.id.soft_key_toolbar_euro);
-		addKey(R.id.soft_key_toolbar_dollar);
 
 		return keys;
 	}

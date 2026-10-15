@@ -194,10 +194,20 @@ public abstract class TypingHandler extends KeyPadHandler {
 			getSuggestions(0, null, onLoad);
 		} else {
 			suggestionOps.commitCurrent(false, true);
+
+			// Deleting a space means "glue the next word" (e.g. contas + taxi = contastaxi), so we do
+			// not reopen the previous word. Deleting a letter means "fix the word", so we reopen it,
+			// but only in T9. In ABC, we never switch to the T9-like editing.
+			final String deletedChar = textSelection.isEmpty() ? textField.getStringBeforeCursor(1) : "";
+			final boolean deletedSpace = !deletedChar.isEmpty() && Character.isWhitespace(deletedChar.charAt(0));
+			final boolean allowRecompose = !deletedSpace && InputModeKind.isPredictive(mInputMode);
+
 			mInputMode.reset();
 			deleteText(settings.getBackspaceAcceleration() && repeat > 0);
 			updateShiftStateDebounced(null, mInputMode.noSuggestions(), false); // backspace may change the text too much, so no beforeCursor cache for now
-			recompose(repeat, !textSelection.isEmpty());
+			if (allowRecompose) {
+				recompose(repeat, !textSelection.isEmpty());
+			}
 		}
 
 		return true;

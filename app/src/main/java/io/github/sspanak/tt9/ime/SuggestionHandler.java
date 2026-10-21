@@ -199,6 +199,13 @@ abstract public class SuggestionHandler extends TypingHandler {
 	}
 
 
+	/**
+	 * Set by the SYM key. While its symbol or emoji list is open, nothing is written in the text
+	 * field until the user picks something. Normally, the first suggestion is shown as a preview.
+	 */
+	public static volatile boolean hideSymbolPreview = false;
+
+
 	@MainThread
 	protected void handleSuggestions(double loadingId, @Nullable Runnable onComplete) {
 		// Second pass, analyze the available suggestions and decide if combining them with the
@@ -230,7 +237,12 @@ abstract public class SuggestionHandler extends TypingHandler {
 			// highlight the current letter, when editing a word
 			trimmedWord = mInputMode.getWordStem() + suggestionOps.getCurrent();
 			appHacks.setComposingTextPartsWithHighlightedJoining(trimmedWord, mInputMode.getRecomposingSuffix());
+		} else if (hideSymbolPreview && mInputMode.getFirstKey() == 1 && !suggestionOps.isEmpty()) {
+			// SYM list: do not write anything until the user picks a symbol or an emoji
+			trimmedWord = "";
+			appHacks.setComposingText("");
 		} else {
+			hideSymbolPreview = false;
 			// or highlight the stem, when filtering
 			trimmedWord = suggestionOps.getCurrent(mLanguage, mInputMode.getSequenceLength());
 			appHacks.setComposingTextWithHighlightedStem(trimmedWord, mInputMode.getWordStem(), mInputMode.isStemFilterFuzzy());

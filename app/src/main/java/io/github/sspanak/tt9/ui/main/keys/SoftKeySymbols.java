@@ -52,6 +52,9 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 			returnToAbc = true;
 		}
 
+		// show the lists without writing anything, until a symbol or an emoji is picked
+		io.github.sspanak.tt9.ime.SuggestionHandler.hideSymbolPreview = true;
+
 		final InputMode mode = tt9.getInputMode();
 		final boolean isSymbolSequence = mode != null && InputModeKind.isPredictive(mode) && mode.getFirstKey() == 1;
 

@@ -27,7 +27,7 @@ public class SoftKeyEmojiMore extends BaseSoftKeyCustomizable {
 
 	@Override
 	public void render() {
-		final boolean show = tt9 != null && tt9.getInputMode() != null && tt9.getInputMode().containsEmojis();
+		final boolean show = tt9 != null && tt9.getInputMode() != null && tt9.getInputMode().containsEmojis() && !EmojiPanel.isShown(tt9);
 		setVisibility(show ? VISIBLE : GONE);
 		super.render();
 	}

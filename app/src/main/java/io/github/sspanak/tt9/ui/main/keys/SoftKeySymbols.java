@@ -61,14 +61,17 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 			return pressKey1();
 		}
 
-		// "symbols" -> "more symbols"
-		if (mode.getSequenceLength() == 1) {
+		// "symbols" -> "more symbols", but only if there are more symbols. Otherwise, the list would be
+		// empty and only a dark, empty bar would show up, so we go straight to the emojis.
+		final boolean hasMoreSymbols = tt9.getLanguage() != null
+			&& !tt9.getSettings().getCharsExtra(tt9.getLanguage(), io.github.sspanak.tt9.preferences.settings.SettingsStore.CHARS_GROUP_1).isEmpty();
+		if (mode.getSequenceLength() == 1 && hasMoreSymbols) {
 			stage = STAGE_MORE_SYMBOLS;
 			return mode.onReplaceSuggestion(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
 		}
 
-		// "more symbols" -> emojis
-		if (stage == STAGE_MORE_SYMBOLS) {
+		// "more symbols" (or "symbols") -> emojis
+		if (stage == STAGE_MORE_SYMBOLS || (mode.getSequenceLength() == 1 && !hasMoreSymbols)) {
 			backToSymbols(mode);
 			stage = STAGE_EMOJIS;
 			final boolean result = pressKey1();

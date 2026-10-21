@@ -78,6 +78,9 @@ public class EmojiPanel {
 
 		final ArrayList<String> recent = settings.getRecentEmojis();
 		selectCategory(tt9, root, recent.isEmpty() ? 1 : CATEGORY_RECENT);
+
+		// hide the "+" button, it is not needed while the panel is open
+		tt9.getMainView().renderDynamicKeys();
 	}
 
 
@@ -93,6 +96,9 @@ public class EmojiPanel {
 			panel.setVisibility(View.GONE);
 			if (keys != null) {
 				keys.setVisibility(View.VISIBLE);
+			}
+			if (tt9.getMainView() != null) {
+				tt9.getMainView().renderDynamicKeys();
 			}
 		}
 	}

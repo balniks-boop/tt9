@@ -71,7 +71,9 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 		if (stage == STAGE_MORE_SYMBOLS) {
 			backToSymbols(mode);
 			stage = STAGE_EMOJIS;
-			return pressKey1();
+			final boolean result = pressKey1();
+			post(() -> { if (tt9 != null && tt9.getMainView() != null) tt9.getMainView().renderDynamicKeys(); });
+			return result;
 		}
 
 		// emojis -> back to "symbols"

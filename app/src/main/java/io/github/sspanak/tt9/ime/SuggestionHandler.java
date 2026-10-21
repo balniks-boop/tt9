@@ -132,6 +132,10 @@ abstract public class SuggestionHandler extends TypingHandler {
 			Clipboard.copy(this, word);
 		}
 
+		if (io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.isEmoji(word)) {
+			settings.addRecentEmoji(word);
+		}
+
 		if (!word.isEmpty()) {
 			String[] surroundingText = autoCorrectSpace(
 				word,

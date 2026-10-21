@@ -28,6 +28,8 @@
 
 		</LinearLayout>
 
+		<include layout="@layout/panel_emoji" />
+
 		<include
 			layout="@layout/panel_extra"
 			android:id="@+id/main_panel_extra"

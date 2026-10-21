@@ -107,6 +107,7 @@ public abstract class TypingHandler extends KeyPadHandler {
 		}
 		settings.setDefaultChars(mLanguage, false);
 		((NaturalLanguage) mLanguage).updateKeyCharacters(settings);
+		settings.getRecentEmojis(); // loads the recent emojis, shown first in the emoji list
 		resetKeyRepeat();
 		mInputMode = determineInputMode();
 		determineTextCase();

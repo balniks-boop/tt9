@@ -37,6 +37,31 @@ class SettingsTyping extends SettingsMindReading {
 		return time > 0 ? time + getKeyPadDebounceTime() : time;
 	}
 	public boolean getAutoSpacePredictive() { return prefs.getBoolean("auto_space_predictive", true); }
+	private static final String RECENT_EMOJI_KEY = "pref_recent_emojis";
+	private static final String RECENT_EMOJI_SEPARATOR = "\u001F";
+	private static final String RECENT_EMOJI_DEFAULT = "😂\u001F❤️\u001F👍\u001F🙏\u001F😊\u001F😍\u001F😘\u001F😉";
+	private static final int RECENT_EMOJI_MAX = 24;
+
+	@androidx.annotation.NonNull
+	public java.util.ArrayList<String> getRecentEmojis() {
+		java.util.ArrayList<String> list = new java.util.ArrayList<>();
+		for (String e : prefs.getString(RECENT_EMOJI_KEY, RECENT_EMOJI_DEFAULT).split(RECENT_EMOJI_SEPARATOR)) {
+			if (!e.isEmpty()) list.add(e);
+		}
+		io.github.sspanak.tt9.util.chars.Characters.setRecentEmoji(list);
+		return list;
+	}
+
+	public void addRecentEmoji(@androidx.annotation.Nullable String emoji) {
+		if (emoji == null || emoji.isEmpty()) return;
+		java.util.ArrayList<String> list = getRecentEmojis();
+		list.remove(emoji);
+		list.add(0, emoji);
+		while (list.size() > RECENT_EMOJI_MAX) list.remove(list.size() - 1);
+		getPrefsEditor().putString(RECENT_EMOJI_KEY, String.join(RECENT_EMOJI_SEPARATOR, list)).apply();
+		io.github.sspanak.tt9.util.chars.Characters.setRecentEmoji(list);
+	}
+
 	public boolean getSpaceAfterChosenWord() { return prefs.getBoolean("pref_space_after_chosen_word", true); }
 	public boolean getAutoTextCasePredictive() { return prefs.getBoolean("auto_text_case_predictive", true); }
 	public boolean getAutoCapitalsAfterNewlinePredictive() {

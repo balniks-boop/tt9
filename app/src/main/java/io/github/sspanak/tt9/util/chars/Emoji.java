@@ -37,7 +37,29 @@ class Emoji extends Punctuation {
 		return !(codePoint < 256 || Character.isLetterOrDigit(codePoint) || Character.isAlphabetic(codePoint));
 	}
 
+	private static ArrayList<String> recentEmoji = new ArrayList<>();
+
+	public static void setRecentEmoji(ArrayList<String> recent) {
+		recentEmoji = recent != null ? new ArrayList<>(recent) : new ArrayList<>();
+	}
+
 	public static ArrayList<String> getEmoji(int level) {
+		// the first emoji list starts with the most recently used ones
+		if (level == 0 && !recentEmoji.isEmpty()) {
+			ArrayList<String> merged = new ArrayList<>();
+			for (String e : recentEmoji) {
+				if (merged.size() < 10 && new Paint().hasGlyph(e)) merged.add(e);
+			}
+			for (String e : Emoji.get(0)) {
+				if (!merged.contains(e) && new Paint().hasGlyph(e)) merged.add(e);
+			}
+			return merged;
+		}
+
+		return getEmojiGroup(level);
+	}
+
+	private static ArrayList<String> getEmojiGroup(int level) {
 		if (level < 0 || level >= Emoji.size()) {
 			return new ArrayList<>();
 		}

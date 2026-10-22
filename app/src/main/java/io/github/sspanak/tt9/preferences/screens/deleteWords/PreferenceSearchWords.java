@@ -49,7 +49,7 @@ public class PreferenceSearchWords extends SearchPreference {
 			Logger.w(LOG_TAG, "No handler set for the word change event.");
 		} else if (lastSearchTerm.isEmpty()) {
 			DataStore.countCustomWords(onTotalWords);
-			DataStore.getCustomWords(onWords, lastSearchTerm, SettingsStore.CUSTOM_WORDS_SEARCH_RESULTS_MAX);
+			DataStore.getCustomWords(onWords, lastSearchTerm, -1); // show all added words, not only the first 50
 		} else {
 			DataStore.countCustomWords(onTotalWords);
 			DataStore.getCustomWords(onWords, lastSearchTerm, -1);

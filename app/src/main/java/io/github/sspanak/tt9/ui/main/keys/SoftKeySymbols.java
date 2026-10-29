@@ -14,9 +14,9 @@ import io.github.sspanak.tt9.ui.tray.SuggestionsBar;
 
 /**
  * "SYM" key, inspired by the TyNi T9 layout.
- * - Tap: cycles "symbols" -> "more symbols" -> emojis -> "symbols"...
- *   Backspace closes the list without typing anything.
- * - Hold: opens the emoji list.
+ * - Tap: recent symbols and emojis -> symbols -> emojis -> closed. Nothing is typed until picked.
+ *   Each list has a "+" at the right of the bar, which opens the full panel with tabs.
+ * - Hold: opens the full panel on the symbols.
  */
 public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	private static final int MAX_BACKSPACES = 20;
@@ -25,6 +25,7 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	private static final int STAGE_EMOJIS = 3;
 	private int stage = 0;
 	private boolean returnToAbc = false;
+	private boolean held = false;
 	private final CmdShowEmojis showEmojis = new CmdShowEmojis();
 
 	public SoftKeySymbols(Context context) { super(context); }
@@ -33,9 +34,17 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 
 
 	@Override
+	protected boolean handlePress() {
+		held = false;
+		return super.handlePress();
+	}
+
+
+	@Override
 	protected void handleHold() {
 		preventRepeat();
-		showEmojis.run(tt9);
+		held = true;
+		io.github.sspanak.tt9.ui.main.emoji.EmojiPanel.show(tt9, io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.TAB_SYMBOLS);
 	}
 
 
@@ -43,6 +52,12 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	protected boolean handleRelease() {
 		if (!validateTT9Handler()) {
 			return false;
+		}
+
+		// a long press already opened the panel
+		if (held) {
+			held = false;
+			return true;
 		}
 
 		// In ABC mode, the key 1 list disappears automatically after a moment, so we briefly switch
@@ -56,36 +71,52 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 		io.github.sspanak.tt9.ime.SuggestionHandler.hideSymbolPreview = true;
 
 		final InputMode mode = tt9.getInputMode();
-		final boolean isSymbolSequence = mode != null && InputModeKind.isPredictive(mode) && mode.getFirstKey() == 1;
+		final boolean isOpen = mode != null && InputModeKind.isPredictive(mode) && mode.getFirstKey() == 1;
 
-		// nothing open yet -> "symbols"
-		if (!isSymbolSequence) {
-			stage = STAGE_SYMBOLS;
-			return pressKey1();
-		}
-
-		// "symbols" -> "more symbols", but only if there are more symbols. Otherwise, the list would be
-		// empty and only a dark, empty bar would show up, so we go straight to the emojis.
-		final boolean hasMoreSymbols = tt9.getLanguage() != null
-			&& !tt9.getSettings().getCharsExtra(tt9.getLanguage(), io.github.sspanak.tt9.preferences.settings.SettingsStore.CHARS_GROUP_1).isEmpty();
-		if (mode.getSequenceLength() == 1 && hasMoreSymbols) {
-			stage = STAGE_MORE_SYMBOLS;
-			return mode.onReplaceSuggestion(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
-		}
-
-		// "more symbols" (or "symbols") -> emojis
-		if (stage == STAGE_MORE_SYMBOLS || (mode.getSequenceLength() == 1 && !hasMoreSymbols)) {
-			backToSymbols(mode);
-			stage = STAGE_EMOJIS;
+		// 1st tap: recently used symbols and emojis (or the symbols, if nothing was used yet)
+		if (!isOpen) {
 			final boolean result = pressKey1();
-			post(() -> { if (tt9 != null && tt9.getMainView() != null) tt9.getMainView().renderDynamicKeys(); });
+			if (!tt9.getSettings().getRecentChars().isEmpty()) {
+				post(() -> {
+					final InputMode m = tt9 != null ? tt9.getInputMode() : null;
+					if (m != null && InputModeKind.isPredictive(m) && m.getFirstKey() == 1 && m.getSequenceLength() == 1) {
+						m.onReplaceSuggestion(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
+					}
+					refreshPlusButton();
+				});
+			} else {
+				refreshPlusButton();
+			}
 			return result;
 		}
 
-		// emojis -> back to "symbols"
-		backToSymbols(mode);
-		stage = STAGE_SYMBOLS;
+		// 2nd tap: recent -> symbols
+		if (mode.isRecentCharsSequence()) {
+			tt9.onBackspace(0);
+			refreshPlusButton();
+			return true;
+		}
+
+		// 3rd tap: symbols -> emojis
+		if (!mode.isEmojiSequence()) {
+			final boolean result = pressKey1();
+			refreshPlusButton();
+			return result;
+		}
+
+		// 4th tap: close everything, without typing anything
+		for (int i = 0; i < MAX_BACKSPACES; i++) {
+			final InputMode m = tt9.getInputMode();
+			if (m == null || m.getFirstKey() != 1) break;
+			tt9.onBackspace(0);
+		}
+		refreshPlusButton();
 		return true;
+	}
+
+
+	private void refreshPlusButton() {
+		post(() -> { if (tt9 != null && tt9.getMainView() != null) tt9.getMainView().renderDynamicKeys(); });
 	}
 
 

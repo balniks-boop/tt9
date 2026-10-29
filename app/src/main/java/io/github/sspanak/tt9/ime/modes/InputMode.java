@@ -168,6 +168,8 @@ abstract public class InputMode {
 	// Utility
 	abstract public int getId();
 	public boolean containsEmojis() { return containsEmojis; }
+	public boolean isRecentCharsSequence() { return digitSequence.equals(seq.CHARS_GROUP_1_SEQUENCE); }
+	public boolean isEmojiSequence() { return seq.startsWithEmojiSequence(digitSequence); }
 	public boolean containsGeneratedSuggestions() { return false; }
 
 	public boolean isTyping() { return !digitSequence.isEmpty(); }
@@ -286,7 +288,8 @@ abstract public class InputMode {
 		} else if (digitSequence.equals(seq.CHARS_GROUP_0_SEQUENCE)) {
 			suggestions = settings.getCharsExtraAsList(language, SettingsStore.CHARS_GROUP_0);
 		} else if (digitSequence.equals(seq.CHARS_GROUP_1_SEQUENCE)) {
-			suggestions = settings.getCharsExtraAsList(language, SettingsStore.CHARS_GROUP_1);
+			// SYM key, first tap: the most recently used symbols and emojis
+			suggestions = settings.getRecentChars();
 		} else {
 			suggestions = new ArrayList<>();
 		}

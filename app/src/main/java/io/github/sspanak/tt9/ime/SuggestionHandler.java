@@ -135,6 +135,9 @@ abstract public class SuggestionHandler extends TypingHandler {
 		if (io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.isEmoji(word)) {
 			settings.addRecentEmoji(word);
 		}
+		if (hideSymbolPreview && io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.isSymbolOrEmoji(word)) {
+			settings.addRecentChar(word);
+		}
 
 		if (!word.isEmpty()) {
 			String[] surroundingText = autoCorrectSpace(

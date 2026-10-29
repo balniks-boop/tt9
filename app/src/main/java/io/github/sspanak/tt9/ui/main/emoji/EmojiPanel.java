@@ -46,6 +46,11 @@ public class EmojiPanel {
 
 
 	public static void show(@Nullable TraditionalT9 tt9) {
+		show(tt9, EmojiCatalog.TAB_RECENT);
+	}
+
+
+	public static void show(@Nullable TraditionalT9 tt9, int startTab) {
 		final View root = getRoot(tt9);
 		if (tt9 == null || root == null) {
 			return;
@@ -76,8 +81,8 @@ public class EmojiPanel {
 		keys.setVisibility(View.GONE);
 		panel.setVisibility(View.VISIBLE);
 
-		final ArrayList<String> recent = settings.getRecentEmojis();
-		selectCategory(tt9, root, recent.isEmpty() ? 1 : CATEGORY_RECENT);
+		final boolean noRecent = startTab == CATEGORY_RECENT && settings.getRecentChars().isEmpty();
+		selectCategory(tt9, root, noRecent ? EmojiCatalog.TAB_SYMBOLS : startTab);
 
 		// hide the "+" button, it is not needed while the panel is open
 		tt9.getMainView().renderDynamicKeys();
@@ -183,7 +188,7 @@ public class EmojiPanel {
 			title.setText(EmojiCatalog.NAMES[category]);
 		}
 
-		currentList = category == CATEGORY_RECENT ? settings.getRecentEmojis() : EmojiCatalog.getCategory(category);
+		currentList = category == CATEGORY_RECENT ? settings.getRecentChars() : EmojiCatalog.getCategory(category);
 
 		if (grid != null) {
 			grid.setAdapter(new EmojiAdapter(currentList, settings));
@@ -193,7 +198,10 @@ public class EmojiPanel {
 				vibrate(tt9, view);
 				tt9.onText(emoji, false);
 				// the recent list is reordered only the next time it is opened, to avoid jumping around
-				settings.addRecentEmoji(emoji);
+				settings.addRecentChar(emoji);
+				if (EmojiCatalog.isEmoji(emoji)) {
+					settings.addRecentEmoji(emoji);
+				}
 			});
 		}
 	}

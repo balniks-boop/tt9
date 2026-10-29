@@ -62,6 +62,28 @@ class SettingsTyping extends SettingsMindReading {
 		io.github.sspanak.tt9.util.chars.Characters.setRecentEmoji(list);
 	}
 
+	private static final String RECENT_CHARS_KEY = "pref_recent_chars";
+	private static final String RECENT_CHARS_DEFAULT = "😂\u001F👍\u001F❤️\u001F€\u001F@\u001F/\u001F#\u001F*";
+
+	/** The most recently used symbols and emojis, picked with the SYM key or from the panel. */
+	@androidx.annotation.NonNull
+	public java.util.ArrayList<String> getRecentChars() {
+		java.util.ArrayList<String> list = new java.util.ArrayList<>();
+		for (String e : prefs.getString(RECENT_CHARS_KEY, RECENT_CHARS_DEFAULT).split(RECENT_EMOJI_SEPARATOR)) {
+			if (!e.isEmpty()) list.add(e);
+		}
+		return list;
+	}
+
+	public void addRecentChar(@androidx.annotation.Nullable String chr) {
+		if (chr == null || chr.isEmpty() || chr.length() > 16) return;
+		java.util.ArrayList<String> list = getRecentChars();
+		list.remove(chr);
+		list.add(0, chr);
+		while (list.size() > RECENT_EMOJI_MAX) list.remove(list.size() - 1);
+		getPrefsEditor().putString(RECENT_CHARS_KEY, String.join(RECENT_EMOJI_SEPARATOR, list)).apply();
+	}
+
 	public boolean getSpaceAfterChosenWord() { return prefs.getBoolean("pref_space_after_chosen_word", true); }
 	public boolean getAutoTextCasePredictive() { return prefs.getBoolean("auto_text_case_predictive", true); }
 	public boolean getAutoCapitalsAfterNewlinePredictive() {

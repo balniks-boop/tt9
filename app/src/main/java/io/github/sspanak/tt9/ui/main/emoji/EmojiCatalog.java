@@ -10,11 +10,19 @@ import java.util.ArrayList;
  * The full emoji list used by the emoji panel, grouped in categories.
  */
 public class EmojiCatalog {
-	public static final String[] ICONS = { "🕘", "😀", "👋", "❤️", "🐶", "🍔", "⚽", "🚗", "💡", "🏳️" };
-	public static final String[] NAMES = { "Recentes", "Caras", "Pessoas e gestos", "Corações e símbolos", "Animais e natureza", "Comida e bebida", "Atividades", "Viagens e lugares", "Objetos", "Bandeiras" };
+	public static final int TAB_RECENT = 0;
+	public static final int TAB_SYMBOLS = 1;
+	public static final int TAB_EMOJIS = 5;
+
+	public static final String[] ICONS = { "🕘", ".,?", "±", "/", "€", "😀", "👋", "❤️", "🐶", "🍔", "⚽", "🚗", "💡", "🏳️" };
+	public static final String[] NAMES = { "Recentes", "Pontuação", "Matemática", "Barras e sinais", "Moedas", "Caras", "Pessoas e gestos", "Corações e símbolos", "Animais e natureza", "Comida e bebida", "Atividades", "Viagens e lugares", "Objetos", "Bandeiras" };
 
 	private static final String[] DATA = {
-		"", // recent emojis come from the settings
+		"", // recent symbols and emojis come from the settings
+		". , ; : ! ? ¡ ¿ ' \" « » “ ” ‘ ’ ( ) [ ] { } … - – — _ · •",
+		"+ − × ÷ = ≠ ≈ ± < > ≤ ≥ % ‰ ^ ~ √ ∞ ° ¹ ² ³ ½ ⅓ ¼ ¾ π µ",
+		"/ \\ | @ # & * § ¶ © ® ™ ✓ ✗ ★ ☆ ← → ↑ ↓ ↔ ♀ ♂ † ¬",
+		"€ $ £ ¥ ¢ ₿ ₹ ₽ ₩ ₺ ¤",
 		"😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 ☺️ 😚 😙 🥲 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🤫 🤔 🤐 🤨 😐 😑 😶 😏 😒 🙄 😬 🤥 😌 😔 😪 🤤 😴 😷 🤒 🤕 🤢 🤮 🤧 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 🧐 😕 😟 🙁 ☹️ 😮 😯 😲 😳 🥺 😦 😧 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 🥱 😤 😡 😠 🤬 😈 👿 💀 💩 🤡 👻 👽 🤖 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🙈 🙉 🙊",
 		"👋 🤚 🖐️ ✋ 🖖 👌 🤌 🤏 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 ☝️ 👍 👎 ✊ 👊 🤛 🤜 👏 🙌 👐 🤲 🤝 🙏 ✍️ 💅 💪 🦵 🦶 👂 👃 🧠 👀 👁️ 👅 👄 💋 👶 🧒 👦 👧 🧑 👱 👨 🧔 👩 🧓 👴 👵 🙍 🙎 🙅 🙆 💁 🙋 🙇 🤦 🤷 👮 👷 💂 🕵️ 👩‍⚕️ 👨‍⚕️ 👩‍🍳 👨‍🍳 👩‍🔧 👨‍🔧 👩‍💻 👨‍💻 🧑‍✈️ 🤴 👸 🤵 👰 🤰 🎅 🤶 🦸 🦹 🧙 🧚 🧛 🧜 🧝 🚶 🧍 🏃 💃 🕺 👯 🧖 🧗 🏇 ⛷️ 🏂 🏌️ 🏄 🚣 🏊 🚴 👫 👬 👭 💏 💑 👪",
 		"❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣️ 💕 💞 💓 💗 💖 💘 💝 💟 ☮️ ✝️ ☪️ 🕉️ ☯️ ♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓ ⚛️ ✅ ☑️ ✔️ ❌ ❎ ➕ ➖ ➗ ✖️ ♾️ ‼️ ⁉️ ❓ ❔ ❕ ❗ 〰️ 💯 🔥 ✨ ⭐ 🌟 💫 💥 💢 💦 💨 🕳️ 💬 💭 💤 🔴 🟠 🟡 🟢 🔵 🟣 ⚫ ⚪ 🟤 🔺 🔻 🔸 🔹 ▶️ ⏸️ ⏹️ ⏺️ ⏭️ ⏮️ 🔀 🔁 🔂 🆗 🆕 🆓 🆒 🆙 🔝 🔜 ⚠️ 🚫 ⛔ 📵 🔞 ♻️ 🔰 ©️ ®️ ™️",
@@ -47,6 +55,22 @@ public class EmojiCatalog {
 		}
 
 		return index >= 0 && index < cache.size() ? cache.get(index) : new ArrayList<>();
+	}
+
+
+	/** True for a single symbol or emoji (no letters, digits or spaces), e.g. "/", "€" or "😂". */
+	public static boolean isSymbolOrEmoji(@NonNull String text) {
+		if (text.isEmpty() || text.length() > 16) {
+			return false;
+		}
+		for (int i = 0; i < text.length(); ) {
+			final int cp = text.codePointAt(i);
+			if (Character.isLetterOrDigit(cp) || Character.isWhitespace(cp)) {
+				return false;
+			}
+			i += Character.charCount(cp);
+		}
+		return true;
 	}
 
 

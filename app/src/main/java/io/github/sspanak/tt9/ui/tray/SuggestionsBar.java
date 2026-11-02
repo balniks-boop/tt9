@@ -389,6 +389,8 @@ public class SuggestionsBar {
 		if (isVisible && selectedIndex > 0) {
 			mView.scrollToPosition(selectedIndex);
 		}
+
+		mView.post(io.github.sspanak.tt9.ui.main.emoji.RecentCharsBar::onSuggestionsChanged);
 	}
 
 

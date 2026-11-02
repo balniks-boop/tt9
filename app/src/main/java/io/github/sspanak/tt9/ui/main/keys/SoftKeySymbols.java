@@ -14,7 +14,8 @@ import io.github.sspanak.tt9.ui.tray.SuggestionsBar;
 
 /**
  * "SYM" key, inspired by the TyNi T9 layout.
- * - Tap: recent symbols and emojis -> symbols -> emojis -> closed. Nothing is typed until picked.
+ * - The recent symbols and emojis are always on the bar while nothing is typed.
+ * - Tap: symbols -> emojis -> back to the recent ones. Nothing is typed until picked.
  *   Each list has a "+" at the right of the bar, which opens the full panel with tabs.
  * - Hold: opens the full panel on the symbols.
  */
@@ -73,38 +74,29 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 		final InputMode mode = tt9.getInputMode();
 		final boolean isOpen = mode != null && InputModeKind.isPredictive(mode) && mode.getFirstKey() == 1;
 
-		// 1st tap: recently used symbols and emojis (or the symbols, if nothing was used yet)
+		// The recent symbols and emojis are always on the bar while nothing is typed.
+		// 1st tap: symbols
 		if (!isOpen) {
 			final boolean result = pressKey1();
-			if (!tt9.getSettings().getRecentChars().isEmpty()) {
-				post(() -> {
-					final InputMode m = tt9 != null ? tt9.getInputMode() : null;
-					if (m != null && InputModeKind.isPredictive(m) && m.getFirstKey() == 1 && m.getSequenceLength() == 1) {
-						m.onReplaceSuggestion(SuggestionsBar.SHOW_GROUP_1_SUGGESTION);
-					}
-					refreshPlusButton();
-				});
-			} else {
-				refreshPlusButton();
-			}
+			refreshPlusButton();
 			return result;
 		}
 
-		// 2nd tap: recent -> symbols
+		// (older list of recent ones on key 1) -> symbols
 		if (mode.isRecentCharsSequence()) {
 			tt9.onBackspace(0);
 			refreshPlusButton();
 			return true;
 		}
 
-		// 3rd tap: symbols -> emojis
+		// 2nd tap: symbols -> emojis
 		if (!mode.isEmojiSequence()) {
 			final boolean result = pressKey1();
 			refreshPlusButton();
 			return result;
 		}
 
-		// 4th tap: close everything, without typing anything
+		// 3rd tap: close the lists, without typing anything, so the recent ones are back
 		for (int i = 0; i < MAX_BACKSPACES; i++) {
 			final InputMode m = tt9.getInputMode();
 			if (m == null || m.getFirstKey() != 1) break;
@@ -154,6 +146,8 @@ public class SoftKeySymbols extends BaseSoftKeyCustomizable {
 	@Override
 	public void render() {
 		super.render();
+		io.github.sspanak.tt9.ui.main.emoji.RecentCharsBar.attach(tt9);
+		io.github.sspanak.tt9.ui.main.emoji.RecentCharsBar.update(tt9);
 
 		// a symbol was chosen (or the list was closed) -> back to ABC
 		if (returnToAbc && tt9 != null) {

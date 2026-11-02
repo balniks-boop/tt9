@@ -10,6 +10,20 @@
 
 	<FrameLayout style="@style/TTheme.Numpad.StatusBar.Wrapper">
 		<include layout="@layout/panel_status_bar" />
+
+		<!-- recently used symbols and emojis, shown while there are no suggestions -->
+		<HorizontalScrollView
+			android:id="@+id/recent_chars_bar"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scrollbars="none"
+			android:visibility="gone">
+			<LinearLayout
+				android:id="@+id/recent_chars_list"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:orientation="horizontal" />
+		</HorizontalScrollView>
 	</FrameLayout>
 
 	<io.github.sspanak.tt9.ui.main.keys.SoftKeyCurrency

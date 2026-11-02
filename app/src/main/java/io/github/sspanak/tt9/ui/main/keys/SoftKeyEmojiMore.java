@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import io.github.sspanak.tt9.ui.main.emoji.EmojiPanel;
 
 /**
- * "+" button at the right of the suggestions bar, shown while a SYM list (recent, symbols or emojis) is there.
+ * "+" button at the right of the suggestions bar, shown with the recent list and while a SYM list (symbols or emojis) is there.
  * It opens the full emoji picker.
  */
 public class SoftKeyEmojiMore extends BaseSoftKeyCustomizable {
@@ -18,7 +18,9 @@ public class SoftKeyEmojiMore extends BaseSoftKeyCustomizable {
 	protected boolean handleRelease() {
 		final io.github.sspanak.tt9.ime.modes.InputMode mode = tt9 != null ? tt9.getInputMode() : null;
 		int tab = io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.TAB_RECENT;
-		if (mode != null && mode.isEmojiSequence()) {
+		if (mode == null || mode.getFirstKey() != 1) {
+			tab = io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.TAB_RECENT;
+		} else if (mode.isEmojiSequence()) {
 			tab = io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.TAB_EMOJIS;
 		} else if (mode != null && !mode.isRecentCharsSequence()) {
 			tab = io.github.sspanak.tt9.ui.main.emoji.EmojiCatalog.TAB_SYMBOLS;
@@ -34,7 +36,7 @@ public class SoftKeyEmojiMore extends BaseSoftKeyCustomizable {
 
 	@Override
 	public void render() {
-		final boolean show = tt9 != null
+		final boolean show = io.github.sspanak.tt9.ui.main.emoji.RecentCharsBar.shouldShow(tt9) || tt9 != null
 			&& tt9.getInputMode() != null
 			&& io.github.sspanak.tt9.ime.modes.InputModeKind.isPredictive(tt9.getInputMode())
 			&& tt9.getInputMode().getFirstKey() == 1

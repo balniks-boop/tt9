@@ -52,6 +52,18 @@ public class SettingsColors extends SettingsHotkeys {
 	}
 
 
+	public float getKeyCornerRadiusDp() {
+		colorScheme = invalidateScheme(colorScheme);
+		return colorScheme.getKeyCornerRadiusDp();
+	}
+
+
+	public float getKeyBorderWidthDp() {
+		colorScheme = invalidateScheme(colorScheme);
+		return colorScheme.getKeyBorderWidthDp();
+	}
+
+
 	public boolean getDarkTheme() {
 		return ColorUtils.calculateLuminance(getKeyboardBackground()) < 0.5;
 	}

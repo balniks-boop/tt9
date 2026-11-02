@@ -15,6 +15,7 @@ public class CollectionColorScheme {
 		all.add(new ColorSchemeSystem(context));
 		all.add(new ColorSchemeSystemDark(context));
 		all.add(new ColorSchemeSystemLight(context));
+		all.addAll(ColorSchemeStyled.getAll(context));
 		all.addAll(ColorSchemeOutline.getAll(context));
 		return all.toArray(new AbstractColorScheme[0]);
 	}

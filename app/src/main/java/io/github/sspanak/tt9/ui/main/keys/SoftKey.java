@@ -328,6 +328,11 @@ public class SoftKey extends BaseClickableKey {
 			return 0;
 		}
 
+		final float styledWidth = tt9 != null ? tt9.getSettings().getKeyBorderWidthDp() : -1;
+		if (styledWidth >= 0) {
+			return Math.max(1, Math.round(styledWidth * getResources().getDisplayMetrics().density));
+		}
+
 		if (tt9 != null && tt9.getSettings().isOutlineColorScheme()) {
 			return Math.max(2, Math.round(1.5f * getResources().getDisplayMetrics().density));
 		}
@@ -341,7 +346,23 @@ public class SoftKey extends BaseClickableKey {
 	 * Sets the key labels, colors and icons using. Potentially, it can also adjust padding and margins and
 	 * other visual properties of the key.
 	 */
+	private int defaultCornerRadius = -1;
+
+	/** Some styles have rounder or squarer keys. */
+	private void renderCornerRadius() {
+		if (defaultCornerRadius < 0) {
+			defaultCornerRadius = getCornerRadius();
+		}
+		final float radiusDp = tt9 != null ? tt9.getSettings().getKeyCornerRadiusDp() : -1;
+		final int radius = radiusDp >= 0 ? Math.round(radiusDp * getResources().getDisplayMetrics().density) : defaultCornerRadius;
+		if (radius >= 0 && radius != getCornerRadius()) {
+			setCornerRadius(radius);
+		}
+	}
+
+
 	public void render() {
+		renderCornerRadius();
 		setBackgroundTintList(backgroundColor);
 		setContentDescription(getAccessibilityText());
 		setRippleColor(rippleColor);

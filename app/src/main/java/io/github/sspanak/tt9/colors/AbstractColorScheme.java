@@ -106,6 +106,13 @@ abstract public class AbstractColorScheme {
 	public int getKeyOkText() { return keyOkText; }
 	public int getKeyOkRipple() { return keyOkRipple; }
 
+	// key shape: -1 means "keep the default"
+	protected float keyCornerRadiusDp = -1;
+	protected float keyBorderWidthDp = -1;
+
+	public float getKeyCornerRadiusDp() { return keyCornerRadiusDp; }
+	public float getKeyBorderWidthDp() { return keyBorderWidthDp; }
+
 
 	@NonNull
 	private ContextThemeWrapper getStyledContext(@NonNull Context context, int themeResId, @Nullable Boolean nightMode) {

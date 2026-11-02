@@ -23,6 +23,7 @@ import io.github.sspanak.tt9.ui.main.keys.SoftKeyText;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarAddWord;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarClipboard;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarNumeric;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarOtherKeyboard;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyToolbarSettings;
 import io.github.sspanak.tt9.util.Logger;
 
@@ -90,7 +91,7 @@ class MainLayoutNumpad extends MainLayoutClassic {
 			}
 
 			// the toolbar keeps its own, smaller height
-			if (key instanceof SoftKeyToolbarSettings || key instanceof SoftKeyToolbarNumeric || key instanceof SoftKeyToolbarAddWord || key instanceof SoftKeyToolbarClipboard || key instanceof SoftKeyCurrency || key instanceof SoftKeyEmojiMore) {
+			if (key instanceof SoftKeyToolbarSettings || key instanceof SoftKeyToolbarNumeric || key instanceof SoftKeyToolbarAddWord || key instanceof SoftKeyToolbarClipboard || key instanceof SoftKeyToolbarOtherKeyboard || key instanceof SoftKeyCurrency || key instanceof SoftKeyEmojiMore) {
 				continue;
 			}
 
@@ -190,6 +191,7 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		addKey(R.id.soft_key_toolbar_numeric);
 		addKey(R.id.soft_key_toolbar_add_word);
 		addKey(R.id.soft_key_toolbar_clipboard);
+		addKey(R.id.soft_key_toolbar_other_keyboard);
 
 		return keys;
 	}

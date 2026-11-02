@@ -296,7 +296,7 @@ abstract public class MainViewHandler extends HotkeyHandler {
 	}
 
 
-	private void resetNormalizedDimensions() {
+	public void resetNormalizedDimensions() {
 		normalizedWidth = -1;
 		normalizedHeight = -1;
 	}

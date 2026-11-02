@@ -108,6 +108,12 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		);
 	}
 
+	public void setNumpadKeyHeight(int height) {
+		getPrefsEditor()
+			.putString(getFoldedAuto(null) ? DropDownKeyHeight.NAME : DropDownKeyHeightUnfolded.NAME, String.valueOf(height))
+			.apply();
+	}
+
 	public float getNumpadFnKeyDefaultScale() {
 		// The simpler getResource.getFloat() requires API 29, so we must get the value manually.
 		try {

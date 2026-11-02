@@ -54,6 +54,7 @@
 	<string name="pref_category_geometry">Geometry</string>
 	<string name="pref_category_debug_options" translatable="false">Debug Options</string>
 	<string name="pref_category_delete_words">Delete Added Words</string>
+	<string name="pref_themes" translatable="false">Temas</string>
 	<string name="pref_category_function_keys">Select Hotkeys</string>
 	<string name="pref_category_fn_key_order">Function Key Order</string>
 	<string name="pref_category_hacks">Compatibility</string>

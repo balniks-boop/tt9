@@ -40,6 +40,24 @@ public class AppearanceScreen extends ScreenWithPreviewKeyboardHeaderFragment {
 		if (colorScheme != null && activity != null) {
 			colorScheme.populate(activity.getSettings());
 		}
+		setupThemesLink();
+	}
+
+
+	/** "Temas" opens its own screen, where the keyboard stays visible while trying the themes. */
+	private void setupThemesLink() {
+		Preference themes = findPreference("pref_open_themes");
+		if (themes == null || activity == null) {
+			return;
+		}
+		final String current = activity.getSettings().getColorSchemeId();
+		themes.setSummary(io.github.sspanak.tt9.colors.CollectionColorScheme.get(activity, current).getDisplayName());
+		themes.setOnPreferenceClickListener(p -> {
+			if (activity != null) {
+				activity.displayScreen(ThemesScreen.NAME);
+			}
+			return true;
+		});
 	}
 
 

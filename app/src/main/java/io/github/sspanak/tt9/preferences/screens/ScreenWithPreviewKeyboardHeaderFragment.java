@@ -84,6 +84,13 @@ abstract public class ScreenWithPreviewKeyboardHeaderFragment extends BaseScreen
 	}
 
 
+	protected void startPreview() {
+		if (preview != null) {
+			preview.start();
+		}
+	}
+
+
 	protected void pausePreview() {
 		if (preview != null) {
 			preview.pause();

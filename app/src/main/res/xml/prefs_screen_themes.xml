@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+	<Preference
+		app:key="pref_themes_confirm"
+		app:iconSpaceReserved="false" />
+	<PreferenceCategory
+		app:key="pref_themes_list"
+		app:iconSpaceReserved="false"
+		app:title="Toque num tema para o ver no teclado" />
+</PreferenceScreen>

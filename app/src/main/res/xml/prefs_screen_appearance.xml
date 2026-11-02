@@ -5,7 +5,7 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory app:key="category_keyboard_color_scheme" app:title="@string/pref_category_colors">
-		<io.github.sspanak.tt9.preferences.screens.appearance.DropDownColorScheme />
+		<Preference app:key="pref_open_themes" app:title="@string/pref_themes" />
 	</PreferenceCategory>
 
 	<PreferenceCategory app:title="@string/pref_category_layout">

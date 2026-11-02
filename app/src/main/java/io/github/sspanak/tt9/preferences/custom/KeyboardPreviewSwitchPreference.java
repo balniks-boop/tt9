@@ -92,6 +92,13 @@ public class KeyboardPreviewSwitchPreference extends Preference {
 	}
 
 
+	/** Turns the preview on and shows the keyboard right away. */
+	public void start() {
+		switchSwitch(true);
+		toggleKeyboard();
+	}
+
+
 	public void pause() {
 		hideKeyboard();
 	}

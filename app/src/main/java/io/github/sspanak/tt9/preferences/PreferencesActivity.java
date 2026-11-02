@@ -154,6 +154,7 @@ public class PreferencesActivity extends PremiumPreferencesActivity implements P
 			case AppearanceUnfoldedScreen.NAME -> new AppearanceUnfoldedScreen(this);
 			case DebugScreen.NAME -> new DebugScreen(this);
 			case DeleteWordsScreen.NAME -> new DeleteWordsScreen(this);
+			case io.github.sspanak.tt9.preferences.screens.appearance.ThemesScreen.NAME -> new io.github.sspanak.tt9.preferences.screens.appearance.ThemesScreen(this);
 			case FnKeyOrderScreen.NAME -> new FnKeyOrderScreen(this);
 			case HotkeysScreen.NAME -> new HotkeysScreen(this);
 			case KeyCharsScreen.NAME -> new KeyCharsScreen(this);

@@ -32,6 +32,8 @@
 
 		<include layout="@layout/panel_clipboard" />
 
+		<include layout="@layout/panel_qwerty" />
+
 		<include
 			layout="@layout/panel_extra"
 			android:id="@+id/main_panel_extra"

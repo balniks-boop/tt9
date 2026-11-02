@@ -75,6 +75,7 @@ public class ClipboardPanel {
 		}
 
 		io.github.sspanak.tt9.ui.main.emoji.EmojiPanel.hide(tt9);
+		io.github.sspanak.tt9.ui.main.qwerty.QwertyPanel.hide(tt9);
 
 		// what is in the clipboard right now goes to the top, even if it was copied before the keyboard started
 		ClipboardHistory.captureCurrent(tt9);

@@ -13,6 +13,7 @@ public class SoftKeyToolbarNumeric extends BaseSoftKeyCustomizable {
 
 	@Override
 	protected boolean handleRelease() {
+		io.github.sspanak.tt9.ui.main.qwerty.QwertyPanel.hide(tt9);
 		return ModeSwitcher.toggleNumeric(tt9);
 	}
 

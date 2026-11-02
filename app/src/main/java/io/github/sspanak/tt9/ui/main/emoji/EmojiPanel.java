@@ -76,6 +76,7 @@ public class EmojiPanel {
 		}
 
 		io.github.sspanak.tt9.ui.main.clipboard.ClipboardPanel.hide(tt9);
+		io.github.sspanak.tt9.ui.main.qwerty.QwertyPanel.hide(tt9);
 
 		final SettingsStore settings = tt9.getSettings();
 		setup(tt9, root, settings);

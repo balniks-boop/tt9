@@ -75,6 +75,8 @@ public class EmojiPanel {
 			panel.setLayoutParams(params);
 		}
 
+		io.github.sspanak.tt9.ui.main.clipboard.ClipboardPanel.hide(tt9);
+
 		final SettingsStore settings = tt9.getSettings();
 		setup(tt9, root, settings);
 

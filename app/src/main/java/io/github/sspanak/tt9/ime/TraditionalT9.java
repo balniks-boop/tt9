@@ -85,6 +85,7 @@ public class TraditionalT9 extends PremiumHandler {
 	public void onFinishInputView(boolean finishingInput) {
 		super.onFinishInputView(finishingInput);
 		io.github.sspanak.tt9.ui.main.emoji.EmojiPanel.hide(this);
+		io.github.sspanak.tt9.ui.main.clipboard.ClipboardPanel.hide(this);
 
 		// Always reopen in T9: if the keyboard was closed in ABC or 123, forget it. Fields that
 		// require numbers still open in 123, because they do not allow T9.
@@ -129,6 +130,7 @@ public class TraditionalT9 extends PremiumHandler {
 		zombieChecks = 0;
 		settings.setDemoMode(false);
 		Logger.setLevel(settings.getLogLevel());
+		io.github.sspanak.tt9.ui.main.clipboard.ClipboardHistory.startListening(this);
 
 		asyncInitThread = asyncInitThread == null ? SupremeExecutor.submit(this::runHeavyInitTasks) : asyncInitThread;
 

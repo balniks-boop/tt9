@@ -30,8 +30,8 @@ import io.github.sspanak.tt9.ui.main.keys.SoftKey;
 public class RecentCharsBar {
 	@NonNull private static WeakReference<TraditionalT9> ref = new WeakReference<>(null);
 	private static boolean wasShown = false;
-	/** Only the newest ones, so they all fit without scrolling and are still easy to tap. */
-	private static final int MAX_VISIBLE = 10;
+	/** How many fit on the bar at once; the rest are reached by scrolling. */
+	private static final int VISIBLE_AT_ONCE = 10;
 
 
 	public static void attach(@Nullable TraditionalT9 tt9) {
@@ -101,8 +101,11 @@ public class RecentCharsBar {
 
 		final SettingsStore settings = tt9.getSettings();
 		final ArrayList<String> chars = settings.getRecentChars();
-		for (int i = 0; i < chars.size() && i < MAX_VISIBLE; i++) {
-			final String ch = chars.get(i);
+		final View bar = root.findViewById(R.id.recent_chars_bar);
+		final int barWidth = bar != null && bar.getWidth() > 0 ? bar.getWidth() : ((View) list.getParent().getParent()).getWidth();
+		final int width = barWidth > 0 ? barWidth / VISIBLE_AT_ONCE : Math.round(34 * list.getResources().getDisplayMetrics().density);
+
+		for (final String ch : chars) {
 			TextView cell = new TextView(list.getContext());
 			cell.setText(ch);
 			cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -117,7 +120,7 @@ public class RecentCharsBar {
 					settings.addRecentEmoji(ch);
 				}
 			});
-			list.addView(cell, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+			list.addView(cell, new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));
 		}
 	}
 }

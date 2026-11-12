@@ -32,12 +32,14 @@ public class DataStore {
 
 	private static WordPairStore pairs;
 	private static WordStore words;
+	private static io.github.sspanak.tt9.db.words.UsageCounter usage;
 
 
 	public static void init(@NonNull Context context) {
 		executor = executor == null ? SupremeExecutor.get() : executor;
 		pairs = pairs == null ? new WordPairStore(context.getApplicationContext()) : pairs;
 		words = words == null ? new WordStore(context.getApplicationContext()) : words;
+		usage = usage == null ? new io.github.sspanak.tt9.db.words.UsageCounter(context.getApplicationContext()) : usage;
 	}
 
 
@@ -98,6 +100,22 @@ public class DataStore {
 
 	public static void put(Consumer<AddWordResult> statusHandler, Language language, String word, boolean makeTopWord) {
 		runInThread(() -> statusHandler.accept(words.put(language, word, makeTopWord)));
+	}
+
+
+	/**
+	 * Counts one more use of the word and, if asked, moves it to the first place, but only when it
+	 * is now used more often than the word that is first.
+	 */
+	public static void recordWordUse(@NonNull Language language, @NonNull String word, @NonNull String sequence, boolean tryToMakeTop) {
+		runInThread(() -> {
+			if (usage != null) {
+				usage.increment(language.getId(), word, language.getLocale());
+			}
+			if (tryToMakeTop) {
+				words.makeTopWord(language, word, sequence, usage);
+			}
+		});
 	}
 
 

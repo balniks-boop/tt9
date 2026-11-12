@@ -261,6 +261,12 @@ public class WordPredictions extends Predictions {
 	 * when there are many textonyms for a single sequence.
 	 */
 	public void onAccept(String word, String sequence) {
+		// count every word written, so the most used ones can stay first
+		final boolean isTopWord = word != null && !words.isEmpty() && words.get(0).equals(word) && stem.isEmpty();
+		if (word != null && isTopWord && settings.getPredictTopWords() && sequence != null && !sequence.isEmpty()) {
+			DataStore.recordWordUse(language, word, sequence, false);
+		}
+
 		if (
 			word == null
 			// If the word is the first suggestion, we have already guessed it right, and it makes no
@@ -283,7 +289,7 @@ public class WordPredictions extends Predictions {
 	 */
 	protected void makeTopWord(String word, String sequence) {
 		if (settings.getPredictTopWords() && !word.equals(lastEnforcedTopWord)) {
-			DataStore.makeTopWord(language, word, sequence);
+			DataStore.recordWordUse(language, word, sequence, true);
 		}
 	}
 

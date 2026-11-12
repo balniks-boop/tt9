@@ -190,6 +190,15 @@ public class WordStore extends BaseSyncStore {
 
 
 	public void makeTopWord(@NonNull Language language, @NonNull String word, @NonNull String sequence) {
+		makeTopWord(language, word, sequence, null);
+	}
+
+
+	/**
+	 * With a usage counter, the word goes first only if it has been chosen more times than the
+	 * current first word (and at least a couple of times), so the most written word stays on top.
+	 */
+	public void makeTopWord(@NonNull Language language, @NonNull String word, @NonNull String sequence, @Nullable UsageCounter usage) {
 		if (!checkOrNotify() || word.isEmpty() || sequence.isEmpty() || language instanceof NullLanguage) {
 			return;
 		}
@@ -207,6 +216,15 @@ public class WordStore extends BaseSyncStore {
 			if (topWord.word.toUpperCase(language.getLocale()).equals(word.toUpperCase(language.getLocale()))) {
 				Logger.d(LOG_TAG, "Word '" + word + "' is already the top word. Time: " + Timer.stop(LOG_TAG) + " ms");
 				return;
+			}
+
+			if (usage != null) {
+				final int wordUses = usage.get(language.getId(), word, language.getLocale());
+				final int topUses = usage.get(language.getId(), topWord.word, language.getLocale());
+				if (wordUses < UsageCounter.MIN_USES_TO_BE_FIRST || wordUses <= topUses) {
+					Logger.d(LOG_TAG, "Keeping '" + topWord.word + "' (" + topUses + " uses) before '" + word + "' (" + wordUses + " uses)");
+					return;
+				}
 			}
 
 			int wordPosition = 0;
